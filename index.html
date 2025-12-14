@@ -55,9 +55,12 @@
     .rate-card label { display: block; font-size: 0.7rem; color: rgba(255,255,255,0.9); margin-bottom: 0.25rem; }
     .rate-card input { width: 100%; padding: 0.4rem; border-radius: 0.25rem; border: none; font-size: 1rem; font-weight: bold; text-align: center; }
     
-    .util-slider { background: #334155; padding: 0.75rem; border-radius: 0.5rem; margin-bottom: 0.5rem; }
+    .util-slider { background: #334155; padding: 0.75rem; border-radius: 0.5rem; margin-bottom: 0.5rem; transition: all 0.3s; }
     .util-slider label { display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.25rem; }
     .util-slider input[type="range"] { width: 100%; accent-color: #14b8a6; }
+    .util-slider.disabled { opacity: 0.4; pointer-events: none; }
+    .util-slider.disabled::after { content: " (Closed)"; color: #ef4444; font-size: 0.7rem; }
+    .util-slider.partial { border-left: 3px solid #f59e0b; }
     
     .expense-row { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem; background: #334155; border-radius: 0.5rem; margin-bottom: 0.5rem; }
     .expense-row .name { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; }
@@ -445,33 +448,19 @@
             </p>
           </div>
           
-          <!-- Individual Time Slot Sliders -->
-          <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.75rem;">Fine-tune individual time slots:</div>
-          
-          <div class="util-slider">
-            <label><span>🌙 Graveyard (12AM-6AM)</span><span id="utilGraveyardVal">20%</span></label>
-            <input type="range" id="utilGraveyard" min="5" max="60" value="20" oninput="updateCalculations()">
+          <!-- Individual Time Slot Sliders - Dynamically Generated -->
+          <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.75rem;">
+            Fine-tune individual time slots: <span id="activeSlotCount" style="color: #14b8a6;"></span>
           </div>
-          <div class="util-slider">
-            <label><span>🌅 Early Morning (6AM-8AM)</span><span id="utilEarlyVal">35%</span></label>
-            <input type="range" id="utilEarly" min="10" max="80" value="35" oninput="updateCalculations()">
-          </div>
-          <div class="util-slider">
-            <label><span>☀️ Morning (8AM-12PM)</span><span id="utilMorningVal">40%</span></label>
-            <input type="range" id="utilMorning" min="10" max="90" value="40" oninput="updateCalculations()">
-          </div>
-          <div class="util-slider">
-            <label><span>🌤️ Afternoon (12PM-6PM)</span><span id="utilAfternoonVal">45%</span></label>
-            <input type="range" id="utilAfternoon" min="10" max="90" value="45" oninput="updateCalculations()">
-          </div>
-          <div class="util-slider">
-            <label><span>🔥 Peak Evening (6PM-10PM)</span><span id="utilPeakVal">85%</span></label>
-            <input type="range" id="utilPeak" min="30" max="100" value="85" oninput="updateCalculations()">
-          </div>
-          <div class="util-slider">
-            <label><span>🌃 Late Night (10PM-12AM)</span><span id="utilLateVal">50%</span></label>
-            <input type="range" id="utilLate" min="10" max="80" value="50" oninput="updateCalculations()">
-          </div>
+          <div id="dynamicSliders"></div>
+
+          <!-- Hidden inputs to store utilization values -->
+          <input type="hidden" id="utilGraveyard" value="20">
+          <input type="hidden" id="utilEarly" value="35">
+          <input type="hidden" id="utilMorning" value="40">
+          <input type="hidden" id="utilAfternoon" value="45">
+          <input type="hidden" id="utilPeak" value="85">
+          <input type="hidden" id="utilLate" value="50">
         </div>
       </div>
 
@@ -740,11 +729,11 @@
     function updateOverallUtilization() {
       const overall = getInputValue('overallUtil', 50);
       document.getElementById('overallUtilVal').textContent = overall + '%';
-      
+
       // Calculate multiplier based on overall (50% = 1x, 100% = 2x, 20% = 0.4x)
       const multiplier = overall / 50;
-      
-      // Update each slider proportionally, respecting their max values
+
+      // Update each hidden input proportionally, respecting their max values
       const sliders = [
         { id: 'utilGraveyard', base: baseUtilization.graveyard, max: 60 },
         { id: 'utilEarly', base: baseUtilization.early, max: 80 },
@@ -753,12 +742,14 @@
         { id: 'utilPeak', base: baseUtilization.peak, max: 100 },
         { id: 'utilLate', base: baseUtilization.late, max: 80 }
       ];
-      
+
       sliders.forEach(slider => {
         const newValue = Math.min(Math.round(slider.base * multiplier), slider.max);
         document.getElementById(slider.id).value = newValue;
       });
-      
+
+      // Rebuild dynamic sliders and recalculate
+      updateTimeBarAndSlots();
       updateCalculations();
     }
 
@@ -861,34 +852,81 @@
         timeBar.style.width = widthPercent + '%';
       }
       
-      // Time slot definitions (start hour, end hour)
+      // Time slot definitions
       const slots = {
-        graveyard: { start: 0, end: 6, id: 'slotGraveyard' },
-        early: { start: 6, end: 8, id: 'slotEarly' },
-        morning: { start: 8, end: 12, id: 'slotMorning' },
-        afternoon: { start: 12, end: 18, id: 'slotAfternoon' },
-        peak: { start: 18, end: 22, id: 'slotPeak' },
-        late: { start: 22, end: 24, id: 'slotLate' }
+        graveyard: { start: 0, end: 6, badgeId: 'slotGraveyard', icon: '🌙', name: 'Graveyard', color: '#8b5cf6', min: 5, max: 60 },
+        early: { start: 6, end: 8, badgeId: 'slotEarly', icon: '🌅', name: 'Early Morning', color: '#10b981', min: 10, max: 80 },
+        morning: { start: 8, end: 12, badgeId: 'slotMorning', icon: '☀️', name: 'Morning', color: '#10b981', min: 10, max: 90 },
+        afternoon: { start: 12, end: 18, badgeId: 'slotAfternoon', icon: '🌤️', name: 'Afternoon', color: '#10b981', min: 10, max: 90 },
+        peak: { start: 18, end: 22, badgeId: 'slotPeak', icon: '🔥', name: 'Peak Evening', color: '#f97316', min: 30, max: 100 },
+        late: { start: 22, end: 24, badgeId: 'slotLate', icon: '🌃', name: 'Late Night', color: '#10b981', min: 10, max: 80 }
       };
-      
-      // Check each slot's status
+
+      // Build dynamic sliders HTML
+      let slidersHTML = '';
+      let activeCount = 0;
+
       Object.keys(slots).forEach(key => {
         const slot = slots[key];
-        const badge = document.getElementById(slot.id);
-        
+        const badge = document.getElementById(slot.badgeId);
         const slotDuration = slot.end - slot.start;
-        const overlap = getSlotActiveHours(slot.start, slot.end);
-        
+        const activeHours = getSlotActiveHours(slot.start, slot.end);
+
+        // Update badge
         badge.classList.remove('active', 'inactive', 'partial');
-        
-        if (overlap === 0) {
+
+        if (activeHours === 0) {
           badge.classList.add('inactive');
-        } else if (overlap < slotDuration) {
+        } else if (activeHours < slotDuration) {
           badge.classList.add('partial');
+          activeCount++;
         } else {
           badge.classList.add('active');
+          activeCount++;
+        }
+
+        // Only show slider if slot has active hours
+        if (activeHours > 0) {
+          const inputId = 'util' + key.charAt(0).toUpperCase() + key.slice(1);
+          const currentValue = document.getElementById(inputId).value;
+          const timeLabel = formatTimeRange(slot.start, slot.end, activeHours, slotDuration);
+          const isPartial = activeHours < slotDuration;
+
+          slidersHTML += `
+            <div class="util-slider${isPartial ? ' partial' : ''}" style="border-left: 3px solid ${slot.color};">
+              <label>
+                <span>${slot.icon} ${slot.name} <span style="color: #64748b; font-size: 0.75rem;">(${timeLabel})</span></span>
+                <span id="${inputId}Val" style="color: ${slot.color};">${currentValue}%</span>
+              </label>
+              <input type="range" id="${inputId}Slider" min="${slot.min}" max="${slot.max}" value="${currentValue}"
+                oninput="updateSliderValue('${inputId}', this.value)" style="accent-color: ${slot.color};">
+            </div>
+          `;
         }
       });
+
+      document.getElementById('dynamicSliders').innerHTML = slidersHTML;
+      document.getElementById('activeSlotCount').textContent = `(${activeCount} active)`;
+    }
+
+    function formatTimeRange(start, end, activeHours, totalHours) {
+      const formatHour = (h) => {
+        if (h === 0 || h === 24) return '12AM';
+        if (h === 12) return '12PM';
+        return h < 12 ? h + 'AM' : (h - 12) + 'PM';
+      };
+
+      if (activeHours === totalHours) {
+        return `${formatHour(start)}-${formatHour(end)}`;
+      } else {
+        return `${activeHours}h of ${totalHours}h`;
+      }
+    }
+
+    function updateSliderValue(inputId, value) {
+      document.getElementById(inputId).value = value;
+      document.getElementById(inputId + 'Val').textContent = value + '%';
+      updateCalculations();
     }
 
     function getSlotActiveHours(slotStart, slotEnd) {
@@ -973,21 +1011,13 @@
       const regularRate = getInputValue('regularRate', 300);
       const graveyardRate = getInputValue('graveyardRate', 200);
       
-      // Utilization values
+      // Utilization values (from hidden inputs)
       const utilGraveyard = getInputValue('utilGraveyard', 20) / 100;
       const utilEarly = getInputValue('utilEarly', 35) / 100;
       const utilMorning = getInputValue('utilMorning', 40) / 100;
       const utilAfternoon = getInputValue('utilAfternoon', 45) / 100;
       const utilPeak = getInputValue('utilPeak', 85) / 100;
       const utilLate = getInputValue('utilLate', 50) / 100;
-      
-      // Update utilization labels
-      document.getElementById('utilGraveyardVal').textContent = Math.round(utilGraveyard * 100) + '%';
-      document.getElementById('utilEarlyVal').textContent = Math.round(utilEarly * 100) + '%';
-      document.getElementById('utilMorningVal').textContent = Math.round(utilMorning * 100) + '%';
-      document.getElementById('utilAfternoonVal').textContent = Math.round(utilAfternoon * 100) + '%';
-      document.getElementById('utilPeakVal').textContent = Math.round(utilPeak * 100) + '%';
-      document.getElementById('utilLateVal').textContent = Math.round(utilLate * 100) + '%';
       
       // Time slots with dynamic hours based on operating hours
       const timeSlots = [
