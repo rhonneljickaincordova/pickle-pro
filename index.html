@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PicklePro Davao - 6 Court Pickleball Facility</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0f172a; color: #e2e8f0; line-height: 1.6; }
+    
+    nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); z-index: 1000; border-bottom: 1px solid #334155; }
+    .nav-container { max-width: 1200px; margin: 0 auto; padding: 1rem; display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-size: 1.5rem; font-weight: bold; color: #fff; }
+    .logo span { color: #14b8a6; }
+    .nav-links { display: flex; gap: 0.5rem; }
+    .nav-links a { color: #94a3b8; text-decoration: none; padding: 0.5rem 1rem; border-radius: 0.5rem; transition: all 0.3s; font-size: 0.9rem; }
+    .nav-links a:hover { background: #14b8a6; color: #fff; }
+    
+    section { padding: 4rem 1rem; max-width: 1200px; margin: 0 auto; }
+    .section-title { font-size: 2rem; text-align: center; margin-bottom: 0.5rem; }
+    .section-subtitle { text-align: center; color: #64748b; margin-bottom: 2rem; }
+    
+    .hero { padding-top: 6rem; text-align: center; background: linear-gradient(135deg, #0f172a 0%, #134e4a 100%); min-height: 60vh; display: flex; flex-direction: column; justify-content: center; }
+    .hero h1 { font-size: 2.5rem; margin-bottom: 1rem; }
+    .hero h1 span { color: #14b8a6; }
+    .hero p { font-size: 1.1rem; color: #94a3b8; max-width: 600px; margin: 0 auto 1.5rem; }
+    .hero-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; max-width: 700px; margin: 1.5rem auto 0; }
+    .stat-card { background: rgba(30, 41, 59, 0.5); padding: 1rem; border-radius: 0.75rem; }
+    .stat-card .value { font-size: 1.5rem; font-weight: bold; color: #14b8a6; }
+    .stat-card .label { font-size: 0.8rem; color: #64748b; }
+    
+    .btn { display: inline-block; padding: 0.6rem 1.2rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; transition: all 0.3s; cursor: pointer; border: none; font-size: 0.9rem; }
+    .btn-primary { background: #14b8a6; color: #fff; }
+    .btn-secondary { background: #334155; color: #fff; }
+    
+    .panel { background: #1e293b; border-radius: 1rem; padding: 1.25rem; margin-bottom: 1.5rem; }
+    .panel-title { font-size: 1.1rem; font-weight: bold; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+    
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; }
+    .grid-6 { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.75rem; }
+    
+    .input-group { margin-bottom: 0.75rem; }
+    .input-group label { display: block; font-size: 0.8rem; color: #94a3b8; margin-bottom: 0.25rem; }
+    .input-group input, .input-group select { width: 100%; padding: 0.5rem; border-radius: 0.5rem; border: 1px solid #334155; background: #0f172a; color: #fff; font-size: 1rem; }
+    .input-group input:focus, .input-group select:focus { outline: none; border-color: #14b8a6; }
+    .input-group .prefix { display: flex; align-items: center; gap: 0.25rem; }
+    .input-group .prefix span { color: #64748b; }
+    
+    .rate-card { padding: 0.75rem; border-radius: 0.5rem; text-align: center; }
+    .rate-card.peak { background: linear-gradient(135deg, #ef4444, #f97316); }
+    .rate-card.regular { background: linear-gradient(135deg, #14b8a6, #10b981); }
+    .rate-card.graveyard { background: linear-gradient(135deg, #6366f1, #8b5cf6); }
+    .rate-card label { display: block; font-size: 0.7rem; color: rgba(255,255,255,0.9); margin-bottom: 0.25rem; }
+    .rate-card input { width: 100%; padding: 0.4rem; border-radius: 0.25rem; border: none; font-size: 1rem; font-weight: bold; text-align: center; }
+    
+    .util-slider { background: #334155; padding: 0.75rem; border-radius: 0.5rem; margin-bottom: 0.5rem; transition: all 0.3s; }
+    .util-slider label { display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.25rem; }
+    .util-slider input[type="range"] { width: 100%; accent-color: #14b8a6; }
+    .util-slider.disabled { opacity: 0.4; pointer-events: none; }
+    .util-slider.disabled::after { content: " (Closed)"; color: #ef4444; font-size: 0.7rem; }
+    .util-slider.partial { border-left: 3px solid #f59e0b; }
+    
+    .expense-row { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem; background: #334155; border-radius: 0.5rem; margin-bottom: 0.5rem; }
+    .expense-row .name { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; }
+    .expense-row input { width: 120px; padding: 0.4rem; border-radius: 0.25rem; border: 1px solid #475569; background: #0f172a; color: #fff; text-align: right; }
+    
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    th, td { padding: 0.6rem; text-align: left; border-bottom: 1px solid #334155; }
+    th { color: #64748b; font-weight: 500; }
+    .text-right { text-align: right; }
+    .text-center { text-align: center; }
+    .positive { color: #10b981; }
+    .negative { color: #ef4444; }
+    
+    .summary-row { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: rgba(51, 65, 85, 0.5); border-radius: 0.5rem; margin-bottom: 0.5rem; }
+    .summary-row.highlight { background: rgba(20, 184, 166, 0.2); border: 2px solid #14b8a6; }
+    .summary-row .value { font-weight: bold; font-size: 1.1rem; }
+    
+    .kpi-card { background: #334155; padding: 1rem; border-radius: 0.5rem; text-align: center; }
+    .kpi-card .label { font-size: 0.7rem; color: #64748b; }
+    .kpi-card .value { font-size: 1.25rem; font-weight: bold; color: #14b8a6; }
+    .kpi-card .sub { font-size: 0.65rem; color: #475569; }
+    
+    .floor-plan { background: #1e293b; border-radius: 1rem; padding: 1rem; }
+    
+    .breakdown-item { display: flex; align-items: center; gap: 0.75rem; background: rgba(51, 65, 85, 0.5); padding: 0.6rem; border-radius: 0.5rem; margin-bottom: 0.4rem; font-size: 0.85rem; }
+    .breakdown-icon { width: 32px; height: 32px; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+    .breakdown-info { flex: 1; }
+    .breakdown-size { text-align: right; }
+    .breakdown-size .sqm { font-weight: bold; color: #14b8a6; }
+    .breakdown-size .pct { font-size: 0.7rem; color: #64748b; }
+    
+    .time-slot-badge { display: inline-block; padding: 0.25rem 0.5rem; border-radius: 0.375rem; font-size: 0.7rem; background: #10b981; color: #fff; transition: all 0.3s; }
+    .time-slot-badge.inactive { background: #475569; color: #94a3b8; text-decoration: line-through; }
+    .time-slot-badge.partial { background: #f59e0b; color: #fff; }
+    
+    footer { background: #0f172a; padding: 2rem; text-align: center; border-top: 1px solid #1e293b; }
+    
+    @media (max-width: 768px) {
+      .grid-2, .grid-3, .grid-4, .grid-6 { grid-template-columns: repeat(2, 1fr); }
+      .hero-stats { grid-template-columns: repeat(2, 1fr); }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-container">
+      <div class="logo">🏓 Pickle<span>Pro</span> Davao</div>
+      <div class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#floorplan">Floor Plan</a>
+        <a href="floorplan/" style="color: #14b8a6;">🎮 3D View</a>
+        <a href="#courtdimensions">Court Specs</a>
+        <a href="#calculator">Calculator</a>
+        <a href="#results">Results</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero" id="home">
+    <h1>Davao's Premier <span>Pickleball Facility</span></h1>
+    <p>Interactive business model calculator for your pickleball investment</p>
+    <div style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 1rem;">
+      <a href="#calculator" class="btn btn-primary">Open Calculator →</a>
+      <a href="#floorplan" class="btn btn-secondary">View Floor Plan</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-card"><div class="value" id="statCourts">6</div><div class="label">Courts</div></div>
+      <div class="stat-card"><div class="value">24/7</div><div class="label">Operation</div></div>
+      <div class="stat-card"><div class="value">1,000</div><div class="label">Sqm</div></div>
+      <div class="stat-card"><div class="value" id="statProfit">₱365K</div><div class="label">Est. Profit/Mo</div></div>
+    </div>
+  </section>
+
+  <!-- Floor Plan -->
+  <section id="floorplan">
+    <h2 class="section-title">📐 Facility Floor Plan</h2>
+    <p class="section-subtitle">1,000 sqm optimized layout with <span id="floorplanCourts">8</span> courts</p>
+    <div style="text-align: center; margin-bottom: 1.5rem;">
+      <a href="floorplan/" class="btn btn-primary" style="padding: 0.75rem 1.5rem; font-size: 1rem;">
+        🎮 Open Interactive 3D Floor Plan →
+      </a>
+      <p style="color: #64748b; font-size: 0.85rem; margin-top: 0.5rem;">Explore with orbit controls & walkthrough mode</p>
+    </div>
+    
+    <div class="floor-plan">
+      <svg viewBox="0 0 560 280" style="width: 100%; max-width: 800px; display: block; margin: 0 auto;">
+        <rect x="20" y="10" width="520" height="260" fill="#e2e8f0" stroke="#64748b" stroke-width="3" rx="8"/>
+        <text x="280" y="28" text-anchor="middle" fill="#64748b" font-size="9" font-weight="bold">40m × 25m = 1,000 sqm</text>
+        
+        <!-- Courts Row 1 -->
+        <g id="courtsRow1"></g>
+        <!-- Courts Row 2 -->
+        <g id="courtsRow2"></g>
+        
+        <!-- Amenities -->
+        <rect x="35" y="220" width="70" height="35" fill="#3b82f6" rx="4"/>
+        <text x="70" y="242" text-anchor="middle" fill="white" font-size="8" font-weight="bold">📋 Reception</text>
+        <text x="70" y="252" text-anchor="middle" fill="#bfdbfe" font-size="6">25 sqm</text>
+        
+        <rect x="115" y="220" width="85" height="35" fill="#8b5cf6" rx="4"/>
+        <text x="157" y="242" text-anchor="middle" fill="white" font-size="8" font-weight="bold">🛋️ Lounge</text>
+        <text x="157" y="252" text-anchor="middle" fill="#ddd6fe" font-size="6">40 sqm</text>
+        
+        <rect x="210" y="220" width="55" height="35" fill="#ec4899" rx="4"/>
+        <text x="237" y="242" text-anchor="middle" fill="white" font-size="8" font-weight="bold">🚻 WC</text>
+        <text x="237" y="252" text-anchor="middle" fill="#fbcfe8" font-size="6">25 sqm</text>
+        
+        <rect x="275" y="220" width="50" height="35" fill="#6366f1" rx="4"/>
+        <text x="300" y="242" text-anchor="middle" fill="white" font-size="8" font-weight="bold">🔐 Lockers</text>
+        <text x="300" y="252" text-anchor="middle" fill="#c7d2fe" font-size="6">15 sqm</text>
+        
+        <rect x="335" y="220" width="70" height="35" fill="#f59e0b" rx="4"/>
+        <text x="370" y="242" text-anchor="middle" fill="white" font-size="8" font-weight="bold">📦 Storage</text>
+        <text x="370" y="252" text-anchor="middle" fill="#fef3c7" font-size="6">40 sqm</text>
+        
+        <rect x="415" y="220" width="60" height="35" fill="#94a3b8" rx="4"/>
+        <text x="445" y="242" text-anchor="middle" fill="white" font-size="8" font-weight="bold">🚶 Circulation</text>
+        <text x="445" y="252" text-anchor="middle" fill="#e2e8f0" font-size="6">55 sqm</text>
+        
+        <rect x="230" y="262" width="100" height="14" fill="#22c55e" rx="3"/>
+        <text x="280" y="272" text-anchor="middle" fill="white" font-size="8" font-weight="bold">🚪 ENTRANCE</text>
+      </svg>
+    </div>
+  </section>
+
+  <!-- Standard Court Dimensions -->
+  <section id="courtdimensions">
+    <h2 class="section-title">🏓 Standard Court Dimensions</h2>
+    <p class="section-subtitle">Official pickleball court specifications</p>
+    
+    <div class="panel" style="max-width: 800px; margin: 0 auto;">
+      <svg viewBox="0 0 500 280" style="width: 100%;">
+        <!-- Background -->
+        <rect x="40" y="25" width="420" height="230" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2" rx="4"/>
+        
+        <!-- Playing surface -->
+        <rect x="80" y="45" width="340" height="190" fill="#2d7a6e" stroke="white" stroke-width="3"/>
+        
+        <!-- Center line -->
+        <line x1="250" y1="45" x2="250" y2="235" stroke="white" stroke-width="2"/>
+        
+        <!-- Net -->
+        <line x1="80" y1="140" x2="420" y2="140" stroke="#1e293b" stroke-width="4"/>
+        <circle cx="80" cy="140" r="5" fill="#374151"/>
+        <circle cx="420" cy="140" r="5" fill="#374151"/>
+        
+        <!-- Kitchen zones -->
+        <rect x="80" y="45" width="340" height="50" fill="#3d9e8f" stroke="white" stroke-width="2"/>
+        <rect x="80" y="185" width="340" height="50" fill="#3d9e8f" stroke="white" stroke-width="2"/>
+        
+        <!-- Labels -->
+        <text x="250" y="75" text-anchor="middle" fill="white" font-size="11" font-weight="bold">NON-VOLLEY ZONE (KITCHEN)</text>
+        <text x="250" y="215" text-anchor="middle" fill="white" font-size="11" font-weight="bold">NON-VOLLEY ZONE (KITCHEN)</text>
+        
+        <!-- Service area labels -->
+        <text x="165" y="120" text-anchor="middle" fill="white" font-size="9">RIGHT SERVICE</text>
+        <text x="335" y="120" text-anchor="middle" fill="white" font-size="9">LEFT SERVICE</text>
+        <text x="165" y="165" text-anchor="middle" fill="white" font-size="9">LEFT SERVICE</text>
+        <text x="335" y="165" text-anchor="middle" fill="white" font-size="9">RIGHT SERVICE</text>
+        
+        <!-- Dimensions - Width -->
+        <line x1="60" y1="45" x2="60" y2="235" stroke="#64748b" stroke-width="1"/>
+        <line x1="55" y1="45" x2="65" y2="45" stroke="#64748b" stroke-width="1"/>
+        <line x1="55" y1="235" x2="65" y2="235" stroke="#64748b" stroke-width="1"/>
+        <text x="45" y="145" text-anchor="middle" fill="#64748b" font-size="10" font-weight="bold" transform="rotate(-90, 45, 145)">20 ft (6.1m)</text>
+        
+        <!-- Dimensions - Length -->
+        <line x1="80" y1="250" x2="420" y2="250" stroke="#64748b" stroke-width="1"/>
+        <line x1="80" y1="245" x2="80" y2="255" stroke="#64748b" stroke-width="1"/>
+        <line x1="420" y1="245" x2="420" y2="255" stroke="#64748b" stroke-width="1"/>
+        <text x="250" y="265" text-anchor="middle" fill="#64748b" font-size="10" font-weight="bold">44 ft (13.4m)</text>
+        
+        <!-- Kitchen depth -->
+        <line x1="430" y1="45" x2="430" y2="95" stroke="#64748b" stroke-width="1"/>
+        <line x1="425" y1="45" x2="435" y2="45" stroke="#64748b" stroke-width="1"/>
+        <line x1="425" y1="95" x2="435" y2="95" stroke="#64748b" stroke-width="1"/>
+        <text x="455" y="75" text-anchor="middle" fill="#64748b" font-size="9" font-weight="bold">7 ft</text>
+        
+        <!-- Net height -->
+        <text x="250" y="152" text-anchor="middle" fill="#64748b" font-size="8">Net: 34" center, 36" sides</text>
+      </svg>
+      
+      <!-- Specs Grid -->
+      <div class="grid-4" style="margin-top: 1rem;">
+        <div class="kpi-card">
+          <div class="label">Court Size</div>
+          <div class="value">20' × 44'</div>
+          <div class="sub">6.1m × 13.4m</div>
+        </div>
+        <div class="kpi-card">
+          <div class="label">Kitchen Zone</div>
+          <div class="value">7 ft deep</div>
+          <div class="sub">Non-volley area</div>
+        </div>
+        <div class="kpi-card">
+          <div class="label">Net Height</div>
+          <div class="value">34" center</div>
+          <div class="sub">36" at posts</div>
+        </div>
+        <div class="kpi-card">
+          <div class="label">With Buffer</div>
+          <div class="value">30' × 60'</div>
+          <div class="sub">9.1m × 18.3m</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Calculator Section -->
+  <section id="calculator">
+    <h2 class="section-title">🧮 Business Model Calculator</h2>
+    <p class="section-subtitle">Adjust all variables to see real-time projections</p>
+    
+    <div class="grid-2">
+      <!-- Left Column -->
+      <div>
+        <!-- Facility Settings -->
+        <div class="panel">
+          <div class="panel-title">🏟️ Facility Settings</div>
+          <div class="grid-3">
+            <div class="input-group">
+              <label>Number of Courts</label>
+              <select id="numCourts" onchange="updateCalculations()">
+                <option value="4">4 Courts</option>
+                <option value="5">5 Courts</option>
+                <option value="6">6 Courts</option>
+                <option value="7">7 Courts</option>
+                <option value="8" selected>8 Courts</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label>Days per Month</label>
+              <select id="daysPerMonth" onchange="updateCalculations()">
+                <option value="28">28 Days</option>
+                <option value="30" selected>30 Days</option>
+                <option value="31">31 Days</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label>Operating Schedule</label>
+              <select id="operationMode" onchange="updateOperatingHours()">
+                <option value="24">24/7 (Full Day)</option>
+                <option value="18">18 Hours (6AM-12AM)</option>
+                <option value="16">16 Hours (6AM-10PM)</option>
+                <option value="12">12 Hours (8AM-8PM)</option>
+                <option value="night">Night Shift (6PM-6AM)</option>
+                <option value="afternoon">Afternoon/Night (3PM-10AM)</option>
+                <option value="custom">Custom Hours</option>
+              </select>
+            </div>
+          </div>
+          
+          <!-- Operating Hours Detail -->
+          <div id="operatingHoursPanel" style="margin-top: 1rem; padding: 1rem; background: #334155; border-radius: 0.75rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+              <span style="font-weight: bold; color: #fff;">🕐 Operating Hours</span>
+              <span id="totalOpHours" style="color: #14b8a6; font-weight: bold;">24 hrs/day</span>
+            </div>
+            
+            <div class="grid-2" style="gap: 1rem;">
+              <div class="input-group" style="margin-bottom: 0;">
+                <label>Opening Time</label>
+                <select id="openTime" onchange="updateOperatingHoursCustom()">
+                  <option value="0" selected>12:00 AM (Midnight)</option>
+                  <option value="1">1:00 AM</option>
+                  <option value="2">2:00 AM</option>
+                  <option value="3">3:00 AM</option>
+                  <option value="4">4:00 AM</option>
+                  <option value="5">5:00 AM</option>
+                  <option value="6">6:00 AM</option>
+                  <option value="7">7:00 AM</option>
+                  <option value="8">8:00 AM</option>
+                  <option value="9">9:00 AM</option>
+                  <option value="10">10:00 AM</option>
+                  <option value="11">11:00 AM</option>
+                  <option value="12">12:00 PM (Noon)</option>
+                  <option value="13">1:00 PM</option>
+                  <option value="14">2:00 PM</option>
+                  <option value="15">3:00 PM</option>
+                  <option value="16">4:00 PM</option>
+                  <option value="17">5:00 PM</option>
+                  <option value="18">6:00 PM</option>
+                  <option value="19">7:00 PM</option>
+                  <option value="20">8:00 PM</option>
+                  <option value="21">9:00 PM</option>
+                  <option value="22">10:00 PM</option>
+                  <option value="23">11:00 PM</option>
+                </select>
+              </div>
+              <div class="input-group" style="margin-bottom: 0;">
+                <label>Closing Time</label>
+                <select id="closeTime" onchange="updateOperatingHoursCustom()">
+                  <option value="0">12:00 AM (Midnight)</option>
+                  <option value="1">1:00 AM</option>
+                  <option value="2">2:00 AM</option>
+                  <option value="3">3:00 AM</option>
+                  <option value="4">4:00 AM</option>
+                  <option value="5">5:00 AM</option>
+                  <option value="6">6:00 AM</option>
+                  <option value="7">7:00 AM</option>
+                  <option value="8">8:00 AM</option>
+                  <option value="9">9:00 AM</option>
+                  <option value="10">10:00 AM</option>
+                  <option value="11">11:00 AM</option>
+                  <option value="12">12:00 PM (Noon)</option>
+                  <option value="13">1:00 PM</option>
+                  <option value="14">2:00 PM</option>
+                  <option value="15">3:00 PM</option>
+                  <option value="16">4:00 PM</option>
+                  <option value="17">5:00 PM</option>
+                  <option value="18">6:00 PM</option>
+                  <option value="19">7:00 PM</option>
+                  <option value="20">8:00 PM</option>
+                  <option value="21">9:00 PM</option>
+                  <option value="22">10:00 PM</option>
+                  <option value="23">11:00 PM</option>
+                  <option value="24" selected>12:00 AM (Next Day)</option>
+                </select>
+              </div>
+            </div>
+            
+            <!-- Overnight indicator -->
+            <div id="overnightBadge" style="display: none; margin-top: 0.75rem; padding: 0.5rem; background: rgba(139, 92, 246, 0.2); border: 1px solid #8b5cf6; border-radius: 0.5rem; text-align: center;">
+              <span style="color: #a78bfa; font-size: 0.85rem;">🌙 Overnight Operation (closes next day)</span>
+            </div>
+            
+            <!-- Visual Time Bar -->
+            <div style="margin-top: 1rem;">
+              <div style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.25rem;">Daily Schedule:</div>
+              <div style="position: relative; height: 30px; background: #1e293b; border-radius: 0.5rem; overflow: hidden;">
+                <div id="timeBarActive" style="position: absolute; height: 100%; background: linear-gradient(90deg, #14b8a6, #10b981); transition: all 0.3s;"></div>
+                <div style="position: absolute; width: 100%; height: 100%; display: flex; justify-content: space-between; align-items: center; padding: 0 0.5rem; font-size: 0.65rem; color: #fff;">
+                  <span>12AM</span>
+                  <span>6AM</span>
+                  <span>12PM</span>
+                  <span>6PM</span>
+                  <span>12AM</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Time Slots Status -->
+            <div style="margin-top: 0.75rem; display: flex; flex-wrap: wrap; gap: 0.5rem;">
+              <span id="slotGraveyard" class="time-slot-badge active">🌙 Graveyard</span>
+              <span id="slotEarly" class="time-slot-badge active">🌅 Early</span>
+              <span id="slotMorning" class="time-slot-badge active">☀️ Morning</span>
+              <span id="slotAfternoon" class="time-slot-badge active">🌤️ Afternoon</span>
+              <span id="slotPeak" class="time-slot-badge active">🔥 Peak</span>
+              <span id="slotLate" class="time-slot-badge active">🌃 Late</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hourly Rates -->
+        <div class="panel">
+          <div class="panel-title">💰 Hourly Rates (per court)</div>
+          <div class="grid-3">
+            <div class="rate-card peak">
+              <label>🔴 Peak (6PM-10PM)</label>
+              <input type="number" id="peakRate" value="400" onchange="updateCalculations()">
+            </div>
+            <div class="rate-card regular">
+              <label>🟢 Regular</label>
+              <input type="number" id="regularRate" value="300" onchange="updateCalculations()">
+            </div>
+            <div class="rate-card graveyard">
+              <label>🟣 Graveyard (12AM-6AM)</label>
+              <input type="number" id="graveyardRate" value="200" onchange="updateCalculations()">
+            </div>
+          </div>
+        </div>
+
+        <!-- Utilization by Time Slot -->
+        <div class="panel">
+          <div class="panel-title">📊 Utilization Settings</div>
+          
+          <!-- Overall Utilization Slider -->
+          <div style="background: linear-gradient(135deg, #0f766e, #14b8a6); padding: 1rem; border-radius: 0.75rem; margin-bottom: 1rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <span style="font-weight: bold; color: #fff;">⚙️ Overall Utilization</span>
+              <span id="overallUtilVal" style="font-size: 1.5rem; font-weight: bold; color: #fff;">50%</span>
+            </div>
+            <input type="range" id="overallUtil" min="20" max="100" value="50" oninput="updateOverallUtilization()" style="width: 100%; accent-color: #fff;">
+            <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: rgba(255,255,255,0.7); margin-top: 0.25rem;">
+              <span>Conservative (20%)</span>
+              <span>Optimistic (100%)</span>
+            </div>
+            <p style="font-size: 0.75rem; color: rgba(255,255,255,0.8); margin-top: 0.5rem; text-align: center;">
+              👆 Drag to adjust all time slots proportionally
+            </p>
+          </div>
+          
+          <!-- Individual Time Slot Sliders - Dynamically Generated -->
+          <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.75rem;">
+            Fine-tune individual time slots: <span id="activeSlotCount" style="color: #14b8a6;"></span>
+          </div>
+          <div id="dynamicSliders"></div>
+
+          <!-- Hidden inputs to store utilization values -->
+          <input type="hidden" id="utilGraveyard" value="20">
+          <input type="hidden" id="utilEarly" value="35">
+          <input type="hidden" id="utilMorning" value="40">
+          <input type="hidden" id="utilAfternoon" value="45">
+          <input type="hidden" id="utilPeak" value="85">
+          <input type="hidden" id="utilLate" value="50">
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div>
+        <!-- Operating Expenses -->
+        <div class="panel">
+          <div class="panel-title">💸 Monthly Operating Expenses</div>
+          <div class="expense-row">
+            <span class="name">🏢 Rent</span>
+            <div class="prefix"><span>₱</span><input type="number" id="expRent" value="100000" onchange="updateCalculations()"></div>
+          </div>
+          <div class="expense-row">
+            <span class="name">👥 Salaries & Wages</span>
+            <div class="prefix"><span>₱</span><input type="number" id="expSalaries" value="145000" onchange="updateCalculations()"></div>
+          </div>
+          <div class="expense-row">
+            <span class="name">💡 Utilities</span>
+            <div class="prefix"><span>₱</span><input type="number" id="expUtilities" value="35000" onchange="updateCalculations()"></div>
+          </div>
+          <div class="expense-row">
+            <span class="name">📣 Marketing</span>
+            <div class="prefix"><span>₱</span><input type="number" id="expMarketing" value="15000" onchange="updateCalculations()"></div>
+          </div>
+          <div class="expense-row">
+            <span class="name">🔧 Maintenance</span>
+            <div class="prefix"><span>₱</span><input type="number" id="expMaintenance" value="12000" onchange="updateCalculations()"></div>
+          </div>
+          <div class="expense-row">
+            <span class="name">🛡️ Insurance</span>
+            <div class="prefix"><span>₱</span><input type="number" id="expInsurance" value="5000" onchange="updateCalculations()"></div>
+          </div>
+          <div class="expense-row">
+            <span class="name">📄 Permits & Taxes</span>
+            <div class="prefix"><span>₱</span><input type="number" id="expPermits" value="5000" onchange="updateCalculations()"></div>
+          </div>
+          <div class="expense-row">
+            <span class="name">📦 Miscellaneous</span>
+            <div class="prefix"><span>₱</span><input type="number" id="expMisc" value="8000" onchange="updateCalculations()"></div>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 2px solid #475569;">
+            <strong>Total Expenses:</strong>
+            <strong id="totalExpenses" style="color: #ef4444;">₱325,000</strong>
+          </div>
+        </div>
+
+        <!-- Additional Revenue -->
+        <div class="panel">
+          <div class="panel-title">📈 Additional Revenue Streams</div>
+          <div class="grid-2">
+            <div class="input-group">
+              <label>👥 Members Count</label>
+              <input type="number" id="memberCount" value="75" onchange="updateCalculations()">
+            </div>
+            <div class="input-group">
+              <label>💳 Avg Membership Fee</label>
+              <input type="number" id="memberFee" value="1500" onchange="updateCalculations()">
+            </div>
+            <div class="input-group">
+              <label>🎓 Coaching Sessions/Mo</label>
+              <input type="number" id="coachingSessions" value="60" onchange="updateCalculations()">
+            </div>
+            <div class="input-group">
+              <label>💵 Coaching Rate/Session</label>
+              <input type="number" id="coachingRate" value="500" onchange="updateCalculations()">
+            </div>
+            <div class="input-group">
+              <label>🏓 Equipment Rentals/Mo</label>
+              <input type="number" id="equipmentRentals" value="150" onchange="updateCalculations()">
+            </div>
+            <div class="input-group">
+              <label>💵 Rental Fee Each</label>
+              <input type="number" id="equipmentFee" value="100" onchange="updateCalculations()">
+            </div>
+            <div class="input-group">
+              <label>🏆 Events per Month</label>
+              <input type="number" id="eventsCount" value="4" onchange="updateCalculations()">
+            </div>
+            <div class="input-group">
+              <label>💵 Avg Event Revenue</label>
+              <input type="number" id="eventRevenue" value="5000" onchange="updateCalculations()">
+            </div>
+          </div>
+        </div>
+
+        <!-- Reset Button -->
+        <button onclick="resetDefaults()" class="btn btn-secondary" style="width: 100%;">🔄 Reset All to Defaults</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Results Section -->
+  <section id="results">
+    <h2 class="section-title">📊 Financial Projections</h2>
+    <p class="section-subtitle">Real-time calculations based on your inputs</p>
+
+    <!-- Revenue by Time Slot -->
+    <div class="panel">
+      <div class="panel-title">🕐 Revenue by Time Slot (Monthly)</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Time Slot</th>
+            <th class="text-center">Hours/Day</th>
+            <th class="text-right">Rate</th>
+            <th class="text-right">Utilization</th>
+            <th class="text-right">Court-Hrs</th>
+            <th class="text-right">Revenue</th>
+          </tr>
+        </thead>
+        <tbody id="revenueTableBody"></tbody>
+        <tfoot>
+          <tr style="background: rgba(51,65,85,0.5);">
+            <td colspan="2"><strong>TOTAL COURT REVENUE</strong></td>
+            <td></td>
+            <td class="text-right" id="avgUtilization">48%</td>
+            <td class="text-right" id="totalCourtHours">2,160</td>
+            <td class="text-right positive"><strong id="totalCourtRevenue">₱550,000</strong></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <!-- Additional Revenue Summary -->
+    <div class="panel">
+      <div class="panel-title">💵 Additional Revenue Summary</div>
+      <div class="grid-4">
+        <div class="kpi-card">
+          <div class="label">👥 Memberships</div>
+          <div class="value" id="revMembership">₱112,500</div>
+          <div class="sub" id="revMembershipSub">75 × ₱1,500</div>
+        </div>
+        <div class="kpi-card">
+          <div class="label">🎓 Coaching</div>
+          <div class="value" id="revCoaching">₱30,000</div>
+          <div class="sub" id="revCoachingSub">60 × ₱500</div>
+        </div>
+        <div class="kpi-card">
+          <div class="label">🏓 Equipment</div>
+          <div class="value" id="revEquipment">₱15,000</div>
+          <div class="sub" id="revEquipmentSub">150 × ₱100</div>
+        </div>
+        <div class="kpi-card">
+          <div class="label">🏆 Events</div>
+          <div class="value" id="revEvents">₱20,000</div>
+          <div class="sub" id="revEventsSub">4 × ₱5,000</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Profit Summary -->
+    <div class="panel" style="background: linear-gradient(135deg, #1e293b, #334155);">
+      <div class="panel-title">✨ Profit & Loss Summary</div>
+      <div class="summary-row">
+        <span>🏓 Court Rental Revenue</span>
+        <span class="value positive" id="summaryCourtRev">₱550,000</span>
+      </div>
+      <div class="summary-row">
+        <span>📈 Additional Revenue</span>
+        <span class="value positive" id="summaryOtherRev">₱177,500</span>
+      </div>
+      <div class="summary-row" style="background: rgba(16,185,129,0.2); border: 1px solid #10b981;">
+        <span><strong>💰 TOTAL REVENUE</strong></span>
+        <span class="value positive" id="summaryTotalRev" style="font-size: 1.3rem;">₱727,500</span>
+      </div>
+      <div class="summary-row">
+        <span>💸 Total Expenses</span>
+        <span class="value negative" id="summaryExpenses">-₱325,000</span>
+      </div>
+      <div class="summary-row highlight">
+        <span><strong>✨ NET PROFIT</strong></span>
+        <span class="value positive" id="summaryProfit" style="font-size: 1.5rem;">₱402,500</span>
+      </div>
+      <div class="grid-2" style="margin-top: 1rem;">
+        <div style="background: rgba(51,65,85,0.5); padding: 1rem; border-radius: 0.5rem; text-align: center;">
+          <div style="color: #64748b; font-size: 0.8rem;">Annual Revenue</div>
+          <div id="annualRev" style="font-size: 1.25rem; font-weight: bold; color: #10b981;">₱8,730,000</div>
+        </div>
+        <div style="background: rgba(51,65,85,0.5); padding: 1rem; border-radius: 0.5rem; text-align: center;">
+          <div style="color: #64748b; font-size: 0.8rem;">Annual Profit</div>
+          <div id="annualProfit" style="font-size: 1.25rem; font-weight: bold; color: #10b981;">₱4,830,000</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Break Even & KPIs -->
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-title">📉 Break-Even Analysis</div>
+        <div class="grid-2">
+          <div class="kpi-card">
+            <div class="label">Monthly Expenses</div>
+            <div class="value" style="color: #ef4444;" id="beExpenses">₱325,000</div>
+          </div>
+          <div class="kpi-card">
+            <div class="label">Break-Even Hours</div>
+            <div class="value" style="color: #f59e0b;" id="beHours">~1,083 hrs</div>
+          </div>
+          <div class="kpi-card">
+            <div class="label">Break-Even Util.</div>
+            <div class="value" id="beUtil">~25%</div>
+          </div>
+          <div class="kpi-card">
+            <div class="label">Available Hours</div>
+            <div class="value" id="beAvailable">4,320 hrs</div>
+          </div>
+        </div>
+        <div style="background: rgba(20,184,166,0.2); border: 1px solid #14b8a6; border-radius: 0.5rem; padding: 0.75rem; margin-top: 0.75rem; text-align: center; font-size: 0.9rem;">
+          ✅ Break-even at only <strong id="beText">~25%</strong> utilization
+        </div>
+      </div>
+      
+      <div class="panel">
+        <div class="panel-title">🎯 Key Performance Indicators</div>
+        <div class="grid-2">
+          <div class="kpi-card">
+            <div class="label">Revenue per Court</div>
+            <div class="value" id="kpiRevCourt">₱121,250</div>
+            <div class="sub">per month</div>
+          </div>
+          <div class="kpi-card">
+            <div class="label">Avg Rev/Court-Hr</div>
+            <div class="value" id="kpiRevHour">₱295</div>
+            <div class="sub">average rate</div>
+          </div>
+          <div class="kpi-card">
+            <div class="label">Daily Revenue</div>
+            <div class="value" id="kpiDailyRev">₱24,250</div>
+            <div class="sub">average</div>
+          </div>
+          <div class="kpi-card">
+            <div class="label">Profit Margin</div>
+            <div class="value" id="kpiMargin">55%</div>
+            <div class="sub">net margin</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="logo">🏓 Pickle<span>Pro</span> Davao</div>
+    <p style="color: #64748b; font-size: 0.85rem;">Interactive Business Model Calculator</p>
+    <p style="color: #475569; font-size: 0.75rem; margin-top: 0.5rem;">© 2024 PicklePro Davao. All rights reserved.</p>
+  </footer>
+
+  <script>
+    function formatCurrency(num) {
+      return '₱' + Math.round(num).toLocaleString();
+    }
+
+    function getInputValue(id, defaultVal) {
+      return parseFloat(document.getElementById(id).value) || defaultVal;
+    }
+
+    // Default base utilization values (at 50% overall)
+    const baseUtilization = {
+      graveyard: 20,
+      early: 35,
+      morning: 40,
+      afternoon: 45,
+      peak: 85,
+      late: 50
+    };
+
+    function updateOverallUtilization() {
+      const overall = getInputValue('overallUtil', 50);
+      document.getElementById('overallUtilVal').textContent = overall + '%';
+
+      // Calculate multiplier based on overall (50% = 1x, 100% = 2x, 20% = 0.4x)
+      const multiplier = overall / 50;
+
+      // Update each hidden input proportionally, respecting their max values
+      const sliders = [
+        { id: 'utilGraveyard', base: baseUtilization.graveyard, max: 60 },
+        { id: 'utilEarly', base: baseUtilization.early, max: 80 },
+        { id: 'utilMorning', base: baseUtilization.morning, max: 90 },
+        { id: 'utilAfternoon', base: baseUtilization.afternoon, max: 90 },
+        { id: 'utilPeak', base: baseUtilization.peak, max: 100 },
+        { id: 'utilLate', base: baseUtilization.late, max: 80 }
+      ];
+
+      sliders.forEach(slider => {
+        const newValue = Math.min(Math.round(slider.base * multiplier), slider.max);
+        document.getElementById(slider.id).value = newValue;
+      });
+
+      // Rebuild dynamic sliders and recalculate
+      updateTimeBarAndSlots();
+      updateCalculations();
+    }
+
+    // Operating hours presets
+    function updateOperatingHours() {
+      const mode = document.getElementById('operationMode').value;
+      
+      let openTime = 0;
+      let closeTime = 24;
+      
+      switch(mode) {
+        case '24':
+          openTime = 0; closeTime = 24;
+          break;
+        case '18':
+          openTime = 6; closeTime = 24;
+          break;
+        case '16':
+          openTime = 6; closeTime = 22;
+          break;
+        case '12':
+          openTime = 8; closeTime = 20;
+          break;
+        case 'night':
+          openTime = 18; closeTime = 6; // 6PM to 6AM (overnight)
+          break;
+        case 'afternoon':
+          openTime = 15; closeTime = 10; // 3PM to 10AM (overnight)
+          break;
+        case 'custom':
+          // Keep current values for custom
+          openTime = getInputValue('openTime', 6);
+          closeTime = getInputValue('closeTime', 24);
+          break;
+      }
+      
+      document.getElementById('openTime').value = openTime;
+      document.getElementById('closeTime').value = closeTime;
+      
+      updateTimeBarAndSlots();
+      updateCalculations();
+    }
+
+    function updateOperatingHoursCustom() {
+      document.getElementById('operationMode').value = 'custom';
+      updateTimeBarAndSlots();
+      updateCalculations();
+    }
+
+    function updateTimeBarAndSlots() {
+      const openTime = parseInt(document.getElementById('openTime').value);
+      let closeTime = parseInt(document.getElementById('closeTime').value);
+      
+      // Handle overnight operation
+      const isOvernight = closeTime <= openTime && closeTime !== 24;
+      const overnightBadge = document.getElementById('overnightBadge');
+      
+      let totalHours;
+      if (closeTime === 24 && openTime === 0) {
+        totalHours = 24; // Full 24 hours
+      } else if (isOvernight) {
+        totalHours = (24 - openTime) + closeTime; // e.g., 3PM to 10AM = 9 + 10 = 19 hours
+      } else {
+        totalHours = closeTime - openTime;
+      }
+      
+      document.getElementById('totalOpHours').textContent = totalHours + ' hrs/day';
+      
+      // Show/hide overnight badge
+      if (overnightBadge) {
+        overnightBadge.style.display = isOvernight ? 'block' : 'none';
+      }
+      
+      // Update visual time bar
+      const timeBar = document.getElementById('timeBarActive');
+      const timeBarContainer = timeBar.parentElement;
+      
+      // Remove any existing second bar
+      const existingBar2 = document.getElementById('timeBarActive2');
+      if (existingBar2) existingBar2.remove();
+      
+      if (isOvernight) {
+        // Two bars for overnight: one from open to midnight, one from midnight to close
+        const startPercent1 = (openTime / 24) * 100;
+        const widthPercent1 = ((24 - openTime) / 24) * 100;
+        timeBar.style.left = startPercent1 + '%';
+        timeBar.style.width = widthPercent1 + '%';
+        
+        // Second bar from midnight to close
+        const bar2 = document.createElement('div');
+        bar2.id = 'timeBarActive2';
+        bar2.style.cssText = 'position: absolute; height: 100%; background: linear-gradient(90deg, #8b5cf6, #a78bfa); transition: all 0.3s;';
+        bar2.style.left = '0%';
+        bar2.style.width = ((closeTime / 24) * 100) + '%';
+        timeBarContainer.appendChild(bar2);
+      } else {
+        const startPercent = (openTime / 24) * 100;
+        const widthPercent = (totalHours / 24) * 100;
+        timeBar.style.left = startPercent + '%';
+        timeBar.style.width = widthPercent + '%';
+      }
+      
+      // Time slot definitions
+      const slots = {
+        graveyard: { start: 0, end: 6, badgeId: 'slotGraveyard', icon: '🌙', name: 'Graveyard', color: '#8b5cf6', min: 5, max: 60 },
+        early: { start: 6, end: 8, badgeId: 'slotEarly', icon: '🌅', name: 'Early Morning', color: '#10b981', min: 10, max: 80 },
+        morning: { start: 8, end: 12, badgeId: 'slotMorning', icon: '☀️', name: 'Morning', color: '#10b981', min: 10, max: 90 },
+        afternoon: { start: 12, end: 18, badgeId: 'slotAfternoon', icon: '🌤️', name: 'Afternoon', color: '#10b981', min: 10, max: 90 },
+        peak: { start: 18, end: 22, badgeId: 'slotPeak', icon: '🔥', name: 'Peak Evening', color: '#f97316', min: 30, max: 100 },
+        late: { start: 22, end: 24, badgeId: 'slotLate', icon: '🌃', name: 'Late Night', color: '#10b981', min: 10, max: 80 }
+      };
+
+      // Build dynamic sliders HTML
+      let slidersHTML = '';
+      let activeCount = 0;
+
+      Object.keys(slots).forEach(key => {
+        const slot = slots[key];
+        const badge = document.getElementById(slot.badgeId);
+        const slotDuration = slot.end - slot.start;
+        const activeHours = getSlotActiveHours(slot.start, slot.end);
+
+        // Update badge
+        badge.classList.remove('active', 'inactive', 'partial');
+
+        if (activeHours === 0) {
+          badge.classList.add('inactive');
+        } else if (activeHours < slotDuration) {
+          badge.classList.add('partial');
+          activeCount++;
+        } else {
+          badge.classList.add('active');
+          activeCount++;
+        }
+
+        // Only show slider if slot has active hours
+        if (activeHours > 0) {
+          const inputId = 'util' + key.charAt(0).toUpperCase() + key.slice(1);
+          const currentValue = document.getElementById(inputId).value;
+          const timeLabel = formatTimeRange(slot.start, slot.end, activeHours, slotDuration);
+          const isPartial = activeHours < slotDuration;
+
+          slidersHTML += `
+            <div class="util-slider${isPartial ? ' partial' : ''}" style="border-left: 3px solid ${slot.color};">
+              <label>
+                <span>${slot.icon} ${slot.name} <span style="color: #64748b; font-size: 0.75rem;">(${timeLabel})</span></span>
+                <span id="${inputId}Val" style="color: ${slot.color};">${currentValue}%</span>
+              </label>
+              <input type="range" id="${inputId}Slider" min="${slot.min}" max="${slot.max}" value="${currentValue}"
+                oninput="updateSliderValue('${inputId}', this.value)" style="accent-color: ${slot.color};">
+            </div>
+          `;
+        }
+      });
+
+      document.getElementById('dynamicSliders').innerHTML = slidersHTML;
+      document.getElementById('activeSlotCount').textContent = `(${activeCount} active)`;
+    }
+
+    function formatTimeRange(start, end, activeHours, totalHours) {
+      const formatHour = (h) => {
+        if (h === 0 || h === 24) return '12AM';
+        if (h === 12) return '12PM';
+        return h < 12 ? h + 'AM' : (h - 12) + 'PM';
+      };
+
+      if (activeHours === totalHours) {
+        return `${formatHour(start)}-${formatHour(end)}`;
+      } else {
+        return `${activeHours}h of ${totalHours}h`;
+      }
+    }
+
+    function updateSliderValue(inputId, value) {
+      document.getElementById(inputId).value = value;
+      document.getElementById(inputId + 'Val').textContent = value + '%';
+      updateCalculations();
+    }
+
+    function getSlotActiveHours(slotStart, slotEnd) {
+      const openTime = parseInt(document.getElementById('openTime').value);
+      let closeTime = parseInt(document.getElementById('closeTime').value);
+      
+      // Handle 24 as midnight (end of day)
+      const isOvernight = closeTime <= openTime && closeTime !== 24;
+      
+      if (closeTime === 24 && openTime === 0) {
+        // Full 24 hours - all slots are fully active
+        return slotEnd - slotStart;
+      }
+      
+      if (isOvernight) {
+        // Overnight operation (e.g., 3PM to 10AM)
+        // Active periods: openTime to 24, AND 0 to closeTime
+        let activeHours = 0;
+        
+        // Check overlap with evening portion (openTime to 24)
+        const overlapStart1 = Math.max(slotStart, openTime);
+        const overlapEnd1 = Math.min(slotEnd, 24);
+        if (overlapEnd1 > overlapStart1) {
+          activeHours += overlapEnd1 - overlapStart1;
+        }
+        
+        // Check overlap with morning portion (0 to closeTime)
+        const overlapStart2 = Math.max(slotStart, 0);
+        const overlapEnd2 = Math.min(slotEnd, closeTime);
+        if (overlapEnd2 > overlapStart2) {
+          activeHours += overlapEnd2 - overlapStart2;
+        }
+        
+        return activeHours;
+      } else {
+        // Normal daytime operation
+        const overlapStart = Math.max(slotStart, openTime);
+        const overlapEnd = Math.min(slotEnd, closeTime);
+        return Math.max(0, overlapEnd - overlapStart);
+      }
+    }
+
+    function updateFloorPlan() {
+      const courts = getInputValue('numCourts', 6);
+      const courtsPerRow = Math.ceil(courts / 2);
+      const courtWidth = Math.min(150, (480 / courtsPerRow) - 10);
+      const courtHeight = 70;
+      
+      let row1HTML = '';
+      let row2HTML = '';
+      
+      for (let i = 0; i < courts; i++) {
+        const row = i < courtsPerRow ? 1 : 2;
+        const col = i < courtsPerRow ? i : i - courtsPerRow;
+        const x = 35 + col * (courtWidth + 10);
+        const y = row === 1 ? 40 : 40 + courtHeight + 15;
+        
+        const courtSVG = `
+          <g transform="translate(${x}, ${y})">
+            <rect width="${courtWidth}" height="${courtHeight}" fill="#1d4e4a" stroke="#0f3d38" stroke-width="2" rx="3"/>
+            <rect x="8" y="6" width="${courtWidth-16}" height="${courtHeight-12}" fill="#2d7a6e" stroke="white" stroke-width="1.5"/>
+            <line x1="${courtWidth/2}" y1="6" x2="${courtWidth/2}" y2="${courtHeight-6}" stroke="white" stroke-width="1"/>
+            <line x1="8" y1="${courtHeight/2}" x2="${courtWidth-8}" y2="${courtHeight/2}" stroke="#333" stroke-width="2"/>
+            <circle cx="${courtWidth/2}" cy="${courtHeight/2}" r="10" fill="#0f766e" stroke="white" stroke-width="1.5"/>
+            <text x="${courtWidth/2}" y="${courtHeight/2+4}" text-anchor="middle" fill="white" font-size="10" font-weight="bold">${i+1}</text>
+          </g>
+        `;
+        
+        if (row === 1) row1HTML += courtSVG;
+        else row2HTML += courtSVG;
+      }
+      
+      document.getElementById('courtsRow1').innerHTML = row1HTML;
+      document.getElementById('courtsRow2').innerHTML = row2HTML;
+    }
+
+    function updateCalculations() {
+      // Get all input values
+      const courts = getInputValue('numCourts', 6);
+      const days = getInputValue('daysPerMonth', 30);
+      const peakRate = getInputValue('peakRate', 400);
+      const regularRate = getInputValue('regularRate', 300);
+      const graveyardRate = getInputValue('graveyardRate', 200);
+      
+      // Utilization values (from hidden inputs)
+      const utilGraveyard = getInputValue('utilGraveyard', 20) / 100;
+      const utilEarly = getInputValue('utilEarly', 35) / 100;
+      const utilMorning = getInputValue('utilMorning', 40) / 100;
+      const utilAfternoon = getInputValue('utilAfternoon', 45) / 100;
+      const utilPeak = getInputValue('utilPeak', 85) / 100;
+      const utilLate = getInputValue('utilLate', 50) / 100;
+      
+      // Time slots with dynamic hours based on operating hours
+      const timeSlots = [
+        { name: 'Graveyard', time: '12AM-6AM', startHr: 0, endHr: 6, util: utilGraveyard, rate: graveyardRate, color: '#8b5cf6' },
+        { name: 'Early Morning', time: '6AM-8AM', startHr: 6, endHr: 8, util: utilEarly, rate: regularRate, color: '#10b981' },
+        { name: 'Morning', time: '8AM-12PM', startHr: 8, endHr: 12, util: utilMorning, rate: regularRate, color: '#10b981' },
+        { name: 'Afternoon', time: '12PM-6PM', startHr: 12, endHr: 18, util: utilAfternoon, rate: regularRate, color: '#10b981' },
+        { name: 'Peak Evening', time: '6PM-10PM', startHr: 18, endHr: 22, util: utilPeak, rate: peakRate, color: '#f97316' },
+        { name: 'Late Night', time: '10PM-12AM', startHr: 22, endHr: 24, util: utilLate, rate: regularRate, color: '#10b981' },
+      ];
+      
+      let totalAvailable = 0;
+      let totalBooked = 0;
+      let totalCourtRevenue = 0;
+      let tableHTML = '';
+      
+      timeSlots.forEach(slot => {
+        const activeHours = getSlotActiveHours(slot.startHr, slot.endHr);
+        const available = activeHours * courts * days;
+        const booked = Math.round(available * slot.util);
+        const revenue = booked * slot.rate;
+        
+        totalAvailable += available;
+        totalBooked += booked;
+        totalCourtRevenue += revenue;
+        
+        const isInactive = activeHours === 0;
+        const isPartial = activeHours > 0 && activeHours < (slot.endHr - slot.startHr);
+        const statusBadge = isInactive ? '<span style="color:#ef4444;font-size:0.7rem;"> (Closed)</span>' : 
+                          isPartial ? '<span style="color:#f59e0b;font-size:0.7rem;"> (' + activeHours + 'h)</span>' : '';
+        
+        tableHTML += `
+          <tr style="${isInactive ? 'opacity: 0.4;' : ''}">
+            <td><strong>${slot.name}</strong>${statusBadge}<br><span style="font-size:0.75rem;color:#64748b;">${slot.time}</span></td>
+            <td class="text-center">${activeHours}h</td>
+            <td class="text-right" style="color:${slot.color};font-weight:bold;">${formatCurrency(slot.rate)}</td>
+            <td class="text-right">${isInactive ? '-' : Math.round(slot.util*100) + '%'}</td>
+            <td class="text-right">${available.toLocaleString()}</td>
+            <td class="text-right positive">${formatCurrency(revenue)}</td>
+          </tr>
+        `;
+      });
+      
+      document.getElementById('revenueTableBody').innerHTML = tableHTML;
+      document.getElementById('totalCourtHours').textContent = totalBooked.toLocaleString();
+      document.getElementById('totalCourtRevenue').textContent = formatCurrency(totalCourtRevenue);
+      document.getElementById('avgUtilization').textContent = Math.round((totalBooked/totalAvailable)*100) + '%';
+      
+      // Expenses
+      const expenses = 
+        getInputValue('expRent', 100000) +
+        getInputValue('expSalaries', 145000) +
+        getInputValue('expUtilities', 35000) +
+        getInputValue('expMarketing', 15000) +
+        getInputValue('expMaintenance', 12000) +
+        getInputValue('expInsurance', 5000) +
+        getInputValue('expPermits', 5000) +
+        getInputValue('expMisc', 8000);
+      
+      document.getElementById('totalExpenses').textContent = formatCurrency(expenses);
+      
+      // Additional Revenue
+      const memberCount = getInputValue('memberCount', 75);
+      const memberFee = getInputValue('memberFee', 1500);
+      const membershipRev = memberCount * memberFee;
+      
+      const coachingSessions = getInputValue('coachingSessions', 60);
+      const coachingRate = getInputValue('coachingRate', 500);
+      const coachingRev = coachingSessions * coachingRate;
+      
+      const equipmentRentals = getInputValue('equipmentRentals', 150);
+      const equipmentFee = getInputValue('equipmentFee', 100);
+      const equipmentRev = equipmentRentals * equipmentFee;
+      
+      const eventsCount = getInputValue('eventsCount', 4);
+      const eventRevenue = getInputValue('eventRevenue', 5000);
+      const eventsRev = eventsCount * eventRevenue;
+      
+      const totalOtherRev = membershipRev + coachingRev + equipmentRev + eventsRev;
+      
+      document.getElementById('revMembership').textContent = formatCurrency(membershipRev);
+      document.getElementById('revMembershipSub').textContent = `${memberCount} × ${formatCurrency(memberFee)}`;
+      document.getElementById('revCoaching').textContent = formatCurrency(coachingRev);
+      document.getElementById('revCoachingSub').textContent = `${coachingSessions} × ${formatCurrency(coachingRate)}`;
+      document.getElementById('revEquipment').textContent = formatCurrency(equipmentRev);
+      document.getElementById('revEquipmentSub').textContent = `${equipmentRentals} × ${formatCurrency(equipmentFee)}`;
+      document.getElementById('revEvents').textContent = formatCurrency(eventsRev);
+      document.getElementById('revEventsSub').textContent = `${eventsCount} × ${formatCurrency(eventRevenue)}`;
+      
+      // Summary
+      const totalRevenue = totalCourtRevenue + totalOtherRev;
+      const netProfit = totalRevenue - expenses;
+      
+      document.getElementById('summaryCourtRev').textContent = formatCurrency(totalCourtRevenue);
+      document.getElementById('summaryOtherRev').textContent = formatCurrency(totalOtherRev);
+      document.getElementById('summaryTotalRev').textContent = formatCurrency(totalRevenue);
+      document.getElementById('summaryExpenses').textContent = '-' + formatCurrency(expenses);
+      document.getElementById('summaryProfit').textContent = formatCurrency(netProfit);
+      document.getElementById('summaryProfit').style.color = netProfit >= 0 ? '#10b981' : '#ef4444';
+      document.getElementById('annualRev').textContent = formatCurrency(totalRevenue * 12);
+      document.getElementById('annualProfit').textContent = formatCurrency(netProfit * 12);
+      document.getElementById('annualProfit').style.color = netProfit >= 0 ? '#10b981' : '#ef4444';
+      
+      // Break Even
+      const avgRate = totalBooked > 0 ? totalCourtRevenue / totalBooked : 300;
+      const beHours = avgRate > 0 ? Math.ceil(expenses / avgRate) : 0;
+      const beUtil = totalAvailable > 0 ? Math.round((beHours / totalAvailable) * 100) : 0;
+      
+      document.getElementById('beExpenses').textContent = formatCurrency(expenses);
+      document.getElementById('beHours').textContent = '~' + beHours.toLocaleString() + ' hrs';
+      document.getElementById('beUtil').textContent = '~' + beUtil + '%';
+      document.getElementById('beAvailable').textContent = totalAvailable.toLocaleString() + ' hrs';
+      document.getElementById('beText').textContent = '~' + beUtil + '%';
+      
+      // KPIs
+      document.getElementById('kpiRevCourt').textContent = formatCurrency(totalRevenue / courts);
+      document.getElementById('kpiRevHour').textContent = formatCurrency(avgRate);
+      document.getElementById('kpiDailyRev').textContent = formatCurrency(totalRevenue / days);
+      document.getElementById('kpiMargin').textContent = totalRevenue > 0 ? Math.round((netProfit/totalRevenue)*100) + '%' : '0%';
+      
+      // Update hero stats
+      document.getElementById('statCourts').textContent = courts;
+      document.getElementById('statProfit').textContent = '₱' + Math.round(netProfit/1000) + 'K';
+      document.getElementById('floorplanCourts').textContent = courts;
+
+      // Update floor plan
+      updateFloorPlan();
+    }
+
+    function resetDefaults() {
+      document.getElementById('numCourts').value = '8';
+      document.getElementById('daysPerMonth').value = '30';
+      document.getElementById('operationMode').value = '24';
+      document.getElementById('openTime').value = '0';
+      document.getElementById('closeTime').value = '24';
+      document.getElementById('peakRate').value = '400';
+      document.getElementById('regularRate').value = '300';
+      document.getElementById('graveyardRate').value = '200';
+      document.getElementById('overallUtil').value = '50';
+      document.getElementById('utilGraveyard').value = '20';
+      document.getElementById('utilEarly').value = '35';
+      document.getElementById('utilMorning').value = '40';
+      document.getElementById('utilAfternoon').value = '45';
+      document.getElementById('utilPeak').value = '85';
+      document.getElementById('utilLate').value = '50';
+      document.getElementById('expRent').value = '100000';
+      document.getElementById('expSalaries').value = '145000';
+      document.getElementById('expUtilities').value = '35000';
+      document.getElementById('expMarketing').value = '15000';
+      document.getElementById('expMaintenance').value = '12000';
+      document.getElementById('expInsurance').value = '5000';
+      document.getElementById('expPermits').value = '5000';
+      document.getElementById('expMisc').value = '8000';
+      document.getElementById('memberCount').value = '75';
+      document.getElementById('memberFee').value = '1500';
+      document.getElementById('coachingSessions').value = '60';
+      document.getElementById('coachingRate').value = '500';
+      document.getElementById('equipmentRentals').value = '150';
+      document.getElementById('equipmentFee').value = '100';
+      document.getElementById('eventsCount').value = '4';
+      document.getElementById('eventRevenue').value = '5000';
+      document.getElementById('overallUtilVal').textContent = '50%';
+      
+      // Remove overnight bar if exists
+      const existingBar2 = document.getElementById('timeBarActive2');
+      if (existingBar2) existingBar2.remove();
+      
+      updateTimeBarAndSlots();
+      updateCalculations();
+    }
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+
+    // Initialize
+    document.getElementById('openTime').value = '0';
+    document.getElementById('closeTime').value = '24';
+    updateTimeBarAndSlots();
+    updateCalculations();
+  </script>
+</body>
+</html>
