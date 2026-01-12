@@ -83,8 +83,6 @@
     .kpi-card .value { font-size: 1.25rem; font-weight: bold; color: #14b8a6; }
     .kpi-card .sub { font-size: 0.65rem; color: #475569; }
     
-    .floor-plan { background: #1e293b; border-radius: 1rem; padding: 1rem; }
-    
     .breakdown-item { display: flex; align-items: center; gap: 0.75rem; background: rgba(51, 65, 85, 0.5); padding: 0.6rem; border-radius: 0.5rem; margin-bottom: 0.4rem; font-size: 0.85rem; }
     .breakdown-icon { width: 32px; height: 32px; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
     .breakdown-info { flex: 1; }
@@ -140,51 +138,11 @@
   <section id="floorplan">
     <h2 class="section-title">📐 Facility Floor Plan</h2>
     <p class="section-subtitle">1,000 sqm optimized layout with <span id="floorplanCourts">8</span> courts</p>
-    <div style="text-align: center; margin-bottom: 1.5rem;">
+    <div style="text-align: center;">
       <a href="floorplan/" class="btn btn-primary" style="padding: 0.75rem 1.5rem; font-size: 1rem;">
         🎮 Open Interactive 3D Floor Plan →
       </a>
       <p style="color: #64748b; font-size: 0.85rem; margin-top: 0.5rem;">Explore with orbit controls & walkthrough mode</p>
-    </div>
-    
-    <div class="floor-plan">
-      <svg viewBox="0 0 560 280" style="width: 100%; max-width: 800px; display: block; margin: 0 auto;">
-        <rect x="20" y="10" width="520" height="260" fill="#e2e8f0" stroke="#64748b" stroke-width="3" rx="8"/>
-        <text x="280" y="28" text-anchor="middle" fill="#64748b" font-size="9" font-weight="bold">40m × 25m = 1,000 sqm</text>
-        
-        <!-- Courts Row 1 -->
-        <g id="courtsRow1"></g>
-        <!-- Courts Row 2 -->
-        <g id="courtsRow2"></g>
-        
-        <!-- Amenities -->
-        <rect x="35" y="220" width="70" height="35" fill="#3b82f6" rx="4"/>
-        <text x="70" y="242" text-anchor="middle" fill="white" font-size="8" font-weight="bold">📋 Reception</text>
-        <text x="70" y="252" text-anchor="middle" fill="#bfdbfe" font-size="6">25 sqm</text>
-        
-        <rect x="115" y="220" width="85" height="35" fill="#8b5cf6" rx="4"/>
-        <text x="157" y="242" text-anchor="middle" fill="white" font-size="8" font-weight="bold">🛋️ Lounge</text>
-        <text x="157" y="252" text-anchor="middle" fill="#ddd6fe" font-size="6">40 sqm</text>
-        
-        <rect x="210" y="220" width="55" height="35" fill="#ec4899" rx="4"/>
-        <text x="237" y="242" text-anchor="middle" fill="white" font-size="8" font-weight="bold">🚻 WC</text>
-        <text x="237" y="252" text-anchor="middle" fill="#fbcfe8" font-size="6">25 sqm</text>
-        
-        <rect x="275" y="220" width="50" height="35" fill="#6366f1" rx="4"/>
-        <text x="300" y="242" text-anchor="middle" fill="white" font-size="8" font-weight="bold">🔐 Lockers</text>
-        <text x="300" y="252" text-anchor="middle" fill="#c7d2fe" font-size="6">15 sqm</text>
-        
-        <rect x="335" y="220" width="70" height="35" fill="#f59e0b" rx="4"/>
-        <text x="370" y="242" text-anchor="middle" fill="white" font-size="8" font-weight="bold">📦 Storage</text>
-        <text x="370" y="252" text-anchor="middle" fill="#fef3c7" font-size="6">40 sqm</text>
-        
-        <rect x="415" y="220" width="60" height="35" fill="#94a3b8" rx="4"/>
-        <text x="445" y="242" text-anchor="middle" fill="white" font-size="8" font-weight="bold">🚶 Circulation</text>
-        <text x="445" y="252" text-anchor="middle" fill="#e2e8f0" font-size="6">55 sqm</text>
-        
-        <rect x="230" y="262" width="100" height="14" fill="#22c55e" rx="3"/>
-        <text x="280" y="272" text-anchor="middle" fill="white" font-size="8" font-weight="bold">🚪 ENTRANCE</text>
-      </svg>
     </div>
   </section>
 
@@ -976,40 +934,6 @@
       }
     }
 
-    function updateFloorPlan() {
-      const courts = getInputValue('numCourts', 6);
-      const courtsPerRow = Math.ceil(courts / 2);
-      const courtWidth = Math.min(150, (480 / courtsPerRow) - 10);
-      const courtHeight = 70;
-      
-      let row1HTML = '';
-      let row2HTML = '';
-      
-      for (let i = 0; i < courts; i++) {
-        const row = i < courtsPerRow ? 1 : 2;
-        const col = i < courtsPerRow ? i : i - courtsPerRow;
-        const x = 35 + col * (courtWidth + 10);
-        const y = row === 1 ? 40 : 40 + courtHeight + 15;
-        
-        const courtSVG = `
-          <g transform="translate(${x}, ${y})">
-            <rect width="${courtWidth}" height="${courtHeight}" fill="#1d4e4a" stroke="#0f3d38" stroke-width="2" rx="3"/>
-            <rect x="8" y="6" width="${courtWidth-16}" height="${courtHeight-12}" fill="#2d7a6e" stroke="white" stroke-width="1.5"/>
-            <line x1="${courtWidth/2}" y1="6" x2="${courtWidth/2}" y2="${courtHeight-6}" stroke="white" stroke-width="1"/>
-            <line x1="8" y1="${courtHeight/2}" x2="${courtWidth-8}" y2="${courtHeight/2}" stroke="#333" stroke-width="2"/>
-            <circle cx="${courtWidth/2}" cy="${courtHeight/2}" r="10" fill="#0f766e" stroke="white" stroke-width="1.5"/>
-            <text x="${courtWidth/2}" y="${courtHeight/2+4}" text-anchor="middle" fill="white" font-size="10" font-weight="bold">${i+1}</text>
-          </g>
-        `;
-        
-        if (row === 1) row1HTML += courtSVG;
-        else row2HTML += courtSVG;
-      }
-      
-      document.getElementById('courtsRow1').innerHTML = row1HTML;
-      document.getElementById('courtsRow2').innerHTML = row2HTML;
-    }
-
     function updateCalculations() {
       // Get all input values
       const courts = getInputValue('numCourts', 6);
@@ -1149,9 +1073,6 @@
       document.getElementById('statCourts').textContent = courts;
       document.getElementById('statProfit').textContent = '₱' + Math.round(netProfit/1000) + 'K';
       document.getElementById('floorplanCourts').textContent = courts;
-
-      // Update floor plan
-      updateFloorPlan();
     }
 
     function resetDefaults() {
