@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "vite --open index-react.html",
-    "build": "vite build && mv dist/floorplan/index-react.html dist/floorplan/index.html && cp index.html dist/ && touch dist/.nojekyll",
+    "build": "vite build && mv dist/floorplan/index-react.html dist/floorplan/index.html && cp index.html dist/ && sed -i '' 's|href=\"index-react.html\"|href=\"floorplan/\"|g' dist/index.html && touch dist/.nojekyll",
     "preview": "vite preview",
     "deploy": "npm run build && gh-pages -d dist"
   },

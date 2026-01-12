@@ -1,10 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import FloorPlanFull from './FloorPlanFull'
+import CourtLayout9 from './CourtLayout9'
 import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <FloorPlanFull />
+    <CourtLayout9 />
   </React.StrictMode>,
 )
