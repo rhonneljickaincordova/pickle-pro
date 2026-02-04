@@ -152,63 +152,95 @@
     <p class="section-subtitle">Official pickleball court specifications</p>
     
     <div class="panel" style="max-width: 800px; margin: 0 auto;">
-      <svg viewBox="0 0 500 280" style="width: 100%;">
-        <!-- Background -->
-        <rect x="40" y="25" width="420" height="230" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2" rx="4"/>
-        
-        <!-- Playing surface -->
-        <rect x="80" y="45" width="340" height="190" fill="#2d7a6e" stroke="white" stroke-width="3"/>
-        
-        <!-- Center line -->
-        <line x1="250" y1="45" x2="250" y2="235" stroke="white" stroke-width="2"/>
-        
-        <!-- Net -->
-        <line x1="80" y1="140" x2="420" y2="140" stroke="#1e293b" stroke-width="4"/>
-        <circle cx="80" cy="140" r="5" fill="#374151"/>
-        <circle cx="420" cy="140" r="5" fill="#374151"/>
-        
-        <!-- Kitchen zones -->
-        <rect x="80" y="45" width="340" height="50" fill="#3d9e8f" stroke="white" stroke-width="2"/>
-        <rect x="80" y="185" width="340" height="50" fill="#3d9e8f" stroke="white" stroke-width="2"/>
-        
-        <!-- Labels -->
-        <text x="250" y="75" text-anchor="middle" fill="white" font-size="11" font-weight="bold">NON-VOLLEY ZONE (KITCHEN)</text>
-        <text x="250" y="215" text-anchor="middle" fill="white" font-size="11" font-weight="bold">NON-VOLLEY ZONE (KITCHEN)</text>
-        
+      <svg viewBox="0 0 620 330" style="width: 100%;">
+        <!-- Out-of-bounds area (30ft x 60ft) - dashed orange border -->
+        <rect x="37" y="30" width="546" height="250" fill="none" stroke="#f59e0b" stroke-width="2" stroke-dasharray="8,4" rx="4"/>
+
+        <!-- Out-of-bounds label (outside the border) -->
+        <text x="500" y="295" text-anchor="middle" fill="#f59e0b" font-size="10">Out-of-Bounds Area</text>
+
+        <!-- Left service areas (15ft each - dark blue) -->
+        <rect x="110" y="72" width="136" height="83" fill="#3366cc" stroke="white" stroke-width="2"/>
+        <rect x="110" y="155" width="136" height="83" fill="#3366cc" stroke="white" stroke-width="2"/>
+
+        <!-- Left kitchen zone (7ft - lighter teal) -->
+        <rect x="246" y="72" width="64" height="166" fill="#5ba3b0" stroke="white" stroke-width="2"/>
+
+        <!-- Right kitchen zone (7ft - lighter teal) -->
+        <rect x="310" y="72" width="64" height="166" fill="#5ba3b0" stroke="white" stroke-width="2"/>
+
+        <!-- Right service areas (15ft each - dark blue) -->
+        <rect x="374" y="72" width="136" height="83" fill="#3366cc" stroke="white" stroke-width="2"/>
+        <rect x="374" y="155" width="136" height="83" fill="#3366cc" stroke="white" stroke-width="2"/>
+
+        <!-- Net (vertical line in center) -->
+        <line x1="310" y1="72" x2="310" y2="238" stroke="#1e293b" stroke-width="5"/>
+        <circle cx="310" cy="72" r="5" fill="#374151"/>
+        <circle cx="310" cy="238" r="5" fill="#374151"/>
+
         <!-- Service area labels -->
-        <text x="165" y="120" text-anchor="middle" fill="white" font-size="9">RIGHT SERVICE</text>
-        <text x="335" y="120" text-anchor="middle" fill="white" font-size="9">LEFT SERVICE</text>
-        <text x="165" y="165" text-anchor="middle" fill="white" font-size="9">LEFT SERVICE</text>
-        <text x="335" y="165" text-anchor="middle" fill="white" font-size="9">RIGHT SERVICE</text>
-        
-        <!-- Dimensions - Width -->
-        <line x1="60" y1="45" x2="60" y2="235" stroke="#64748b" stroke-width="1"/>
-        <line x1="55" y1="45" x2="65" y2="45" stroke="#64748b" stroke-width="1"/>
-        <line x1="55" y1="235" x2="65" y2="235" stroke="#64748b" stroke-width="1"/>
-        <text x="45" y="145" text-anchor="middle" fill="#64748b" font-size="10" font-weight="bold" transform="rotate(-90, 45, 145)">20 ft (6.1m)</text>
-        
-        <!-- Dimensions - Length -->
-        <line x1="80" y1="250" x2="420" y2="250" stroke="#64748b" stroke-width="1"/>
-        <line x1="80" y1="245" x2="80" y2="255" stroke="#64748b" stroke-width="1"/>
-        <line x1="420" y1="245" x2="420" y2="255" stroke="#64748b" stroke-width="1"/>
-        <text x="250" y="265" text-anchor="middle" fill="#64748b" font-size="10" font-weight="bold">44 ft (13.4m)</text>
-        
-        <!-- Kitchen depth -->
-        <line x1="430" y1="45" x2="430" y2="95" stroke="#64748b" stroke-width="1"/>
-        <line x1="425" y1="45" x2="435" y2="45" stroke="#64748b" stroke-width="1"/>
-        <line x1="425" y1="95" x2="435" y2="95" stroke="#64748b" stroke-width="1"/>
-        <text x="455" y="75" text-anchor="middle" fill="#64748b" font-size="9" font-weight="bold">7 ft</text>
-        
-        <!-- Net height -->
-        <text x="250" y="152" text-anchor="middle" fill="#64748b" font-size="8">Net: 34" center, 36" sides</text>
+        <text x="178" y="110" text-anchor="middle" fill="white" font-size="9">Even</text>
+        <text x="178" y="124" text-anchor="middle" fill="white" font-size="9">Court</text>
+        <text x="178" y="190" text-anchor="middle" fill="white" font-size="9">Odd</text>
+        <text x="178" y="204" text-anchor="middle" fill="white" font-size="9">Court</text>
+        <text x="442" y="110" text-anchor="middle" fill="white" font-size="9">Even</text>
+        <text x="442" y="124" text-anchor="middle" fill="white" font-size="9">Court</text>
+        <text x="442" y="190" text-anchor="middle" fill="white" font-size="9">Odd</text>
+        <text x="442" y="204" text-anchor="middle" fill="white" font-size="9">Court</text>
+
+        <!-- Kitchen labels -->
+        <text x="278" y="160" text-anchor="middle" fill="white" font-size="9" font-weight="bold">NVZ</text>
+        <text x="342" y="160" text-anchor="middle" fill="white" font-size="9" font-weight="bold">NVZ</text>
+
+        <!-- Dimension: 60 ft (top - out of bounds) -->
+        <line x1="37" y1="18" x2="583" y2="18" stroke="#f59e0b" stroke-width="1"/>
+        <line x1="37" y1="13" x2="37" y2="23" stroke="#f59e0b" stroke-width="1"/>
+        <line x1="583" y1="13" x2="583" y2="23" stroke="#f59e0b" stroke-width="1"/>
+        <text x="310" y="12" text-anchor="middle" fill="#f59e0b" font-size="11" font-weight="bold">60 ft</text>
+
+        <!-- Dimension: 44 ft (court length) -->
+        <line x1="110" y1="55" x2="510" y2="55" stroke="#64748b" stroke-width="1" stroke-dasharray="4,2"/>
+        <line x1="110" y1="50" x2="110" y2="60" stroke="#64748b" stroke-width="1"/>
+        <line x1="510" y1="50" x2="510" y2="60" stroke="#64748b" stroke-width="1"/>
+        <text x="310" y="48" text-anchor="middle" fill="#64748b" font-size="10" font-weight="bold">44 ft</text>
+
+        <!-- Dimension: 30 ft (right side - out of bounds) -->
+        <line x1="600" y1="30" x2="600" y2="280" stroke="#f59e0b" stroke-width="1"/>
+        <line x1="595" y1="30" x2="605" y2="30" stroke="#f59e0b" stroke-width="1"/>
+        <line x1="595" y1="280" x2="605" y2="280" stroke="#f59e0b" stroke-width="1"/>
+        <text x="310" y="295" text-anchor="middle" fill="#f59e0b" font-size="11" font-weight="bold" transform="rotate(90, 610, 155)">30 ft</text>
+
+        <!-- Dimension: 20 ft (court width) -->
+        <line x1="525" y1="72" x2="525" y2="238" stroke="#64748b" stroke-width="1" stroke-dasharray="4,2"/>
+        <line x1="520" y1="72" x2="530" y2="72" stroke="#64748b" stroke-width="1"/>
+        <line x1="520" y1="238" x2="530" y2="238" stroke="#64748b" stroke-width="1"/>
+        <text x="555" y="159" text-anchor="middle" fill="#64748b" font-size="10" font-weight="bold">20 ft</text>
+
+        <!-- Dimension: 7 ft kitchen (inside out-of-bounds) -->
+        <line x1="310" y1="258" x2="374" y2="258" stroke="#f59e0b" stroke-width="1"/>
+        <line x1="310" y1="253" x2="310" y2="263" stroke="#f59e0b" stroke-width="1"/>
+        <line x1="374" y1="253" x2="374" y2="263" stroke="#f59e0b" stroke-width="1"/>
+        <text x="342" y="273" text-anchor="middle" fill="#f59e0b" font-size="9" font-weight="bold">7 ft</text>
+
+        <!-- Dimension: 15 ft service (inside out-of-bounds) -->
+        <line x1="374" y1="258" x2="510" y2="258" stroke="#f59e0b" stroke-width="1"/>
+        <line x1="510" y1="253" x2="510" y2="263" stroke="#f59e0b" stroke-width="1"/>
+        <text x="442" y="273" text-anchor="middle" fill="#f59e0b" font-size="9" font-weight="bold">15 ft</text>
+
+        <!-- Dimension: 10 ft half-width indicator -->
+        <line x1="375" y1="155" x2="509" y2="155" stroke="rgba(255,255,255,0.5)" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="442" y="152" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-size="8">10 ft</text>
+
+        <!-- Net label -->
+        <text x="310" y="252" text-anchor="middle" fill="#64748b" font-size="9">Net = 22 ft</text>
       </svg>
       
       <!-- Specs Grid -->
       <div class="grid-4" style="margin-top: 1rem;">
         <div class="kpi-card">
           <div class="label">Court Size</div>
-          <div class="value">20' × 44'</div>
-          <div class="sub">6.1m × 13.4m</div>
+          <div class="value">44' × 20'</div>
+          <div class="sub">13.4m × 6.1m</div>
         </div>
         <div class="kpi-card">
           <div class="label">Kitchen Zone</div>
@@ -216,14 +248,14 @@
           <div class="sub">Non-volley area</div>
         </div>
         <div class="kpi-card">
-          <div class="label">Net Height</div>
-          <div class="value">34" center</div>
-          <div class="sub">36" at posts</div>
+          <div class="label">Net Width</div>
+          <div class="value">22 ft</div>
+          <div class="sub">34" center height</div>
         </div>
         <div class="kpi-card">
           <div class="label">With Buffer</div>
-          <div class="value">30' × 60'</div>
-          <div class="sub">9.1m × 18.3m</div>
+          <div class="value">60' × 30'</div>
+          <div class="sub">18.3m × 9.1m</div>
         </div>
       </div>
     </div>

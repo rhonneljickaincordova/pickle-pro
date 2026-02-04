@@ -23,71 +23,74 @@ export default function CourtLayout9() {
   const toFeet = (m) => (m * 3.28084).toFixed(1);
   const formatDim = (m) => unit === 'meters' ? `${m}m` : `${toFeet(m)}'`;
 
-  // Land dimensions: 20m x 50m (1,000 sqm)
-  // 8 courts + 1 vacant space in layout (3 courts x 3 rows) - TIGHT/NO RUN-OFF
+  // Land dimensions: 40m x 50m (2,000 sqm)
+  // 10 courts in 2x5 layout with standard 60'x30' (18.3m x 9.1m) out-of-bounds spacing
   // Pickleball court: 6.1m x 13.41m (20' x 44')
-  // Kitchen (NVZ): 2.13m (7') from net on each side
-  // Gap between courts: 0.5m (minimal - NO RUN-OFF)
+  // With buffer: 18.3m x 9.1m (60' x 30') per court
+  // Option B: Courts rotated - length along lot width, 2 columns x 5 rows
 
   // SVG scale: 1m = 10px for better visibility
   const scale = 10;
-  const landWidth = 20 * scale;   // 200px
+  const landWidth = 40 * scale;   // 400px
   const landHeight = 50 * scale;  // 500px
 
-  // Court dimensions in meters
-  const courtWidth = 6.1;
-  const courtLength = 13.41;
+  // Court dimensions in meters (rotated orientation for Option B)
+  // Display width = court length (13.41m), Display height = court width (6.1m)
+  const courtWidth = 13.41;  // Court length displayed horizontally
+  const courtLength = 6.1;   // Court width displayed vertically
   const kitchenDepth = 2.13; // 7 feet - non-volley zone
 
-  // Layout: 3 courts across, 3 rows (TIGHT SPACING)
-  const gapX = 0.5; // minimal gap between courts horizontally
-  const gapY = 1.5; // gap between rows vertically
+  // Layout: 2 courts across (x), 5 rows (y) with standard out-of-bounds spacing
+  // Buffer per court: 18.3m x 9.1m
+  // Court: 13.41m x 6.1m
+  // Side buffer: (18.3-13.41)/2 = 2.445m, (9.1-6.1)/2 = 1.5m
+  const gapX = 4.89; // 2.445m + 2.445m between courts horizontally
+  const gapY = 3.0;  // 1.5m + 1.5m between courts vertically
 
-  // Calculate margins
-  // Width: 3 courts (6.1m x 3) + 2 gaps (0.5m x 2) = 19.3m, leaving 0.7m for margins
-  const totalCourtsWidth = courtWidth * 3 + gapX * 2; // 19.3m
-  const marginX = (20 - totalCourtsWidth) / 2; // ~0.35m each side
+  // Calculate margins (centering the courts on the lot)
+  // Total width: 2 courts (13.41m x 2) + 1 gap (4.89m) + buffers (2.445m x 2) = 36.6m
+  const totalCourtsWidth = courtWidth * 2 + gapX + 2.445 * 2; // 36.6m
+  const marginX = (40 - totalCourtsWidth) / 2 + 2.445; // Start position including buffer
 
-  // Height: 3 courts (13.41m x 3) + 2 gaps (1.5m x 2) = 43.23m, leaving 6.77m for margins
-  const totalCourtsHeight = courtLength * 3 + gapY * 2; // 43.23m
-  const marginY = 1.5; // Fixed 1.5m top margin, remaining space at bottom (~5.27m)
+  // Total height: 5 courts (6.1m x 5) + 4 gaps (3m x 4) + buffers (1.5m x 2) = 45.5m
+  const totalCourtsHeight = courtLength * 5 + gapY * 4 + 1.5 * 2; // 45.5m
+  const marginY = (50 - totalCourtsHeight) / 2 + 1.5; // Start position including buffer
 
-  // Individual courts for 8-court layout (3x3 with 1 vacant)
+  // Individual courts for 10-court layout (2 columns x 5 rows)
   const courts = [
-    // Row 1 - 3 courts
+    // Row 1
     { id: 1, x: marginX, y: marginY, label: '1' },
     { id: 2, x: marginX + courtWidth + gapX, y: marginY, label: '2' },
-    { id: 3, x: marginX + (courtWidth + gapX) * 2, y: marginY, label: '3' },
-    // Row 2 - 3 courts
-    { id: 4, x: marginX, y: marginY + courtLength + gapY, label: '4' },
-    { id: 5, x: marginX + courtWidth + gapX, y: marginY + courtLength + gapY, label: '5' },
-    { id: 6, x: marginX + (courtWidth + gapX) * 2, y: marginY + courtLength + gapY, label: '6' },
-    // Row 3 - 2 courts + 1 vacant
-    { id: 7, x: marginX, y: marginY + (courtLength + gapY) * 2, label: '7' },
-    { id: 8, x: marginX + courtWidth + gapX, y: marginY + (courtLength + gapY) * 2, label: '8' },
+    // Row 2
+    { id: 3, x: marginX, y: marginY + (courtLength + gapY) * 1, label: '3' },
+    { id: 4, x: marginX + courtWidth + gapX, y: marginY + (courtLength + gapY) * 1, label: '4' },
+    // Row 3
+    { id: 5, x: marginX, y: marginY + (courtLength + gapY) * 2, label: '5' },
+    { id: 6, x: marginX + courtWidth + gapX, y: marginY + (courtLength + gapY) * 2, label: '6' },
+    // Row 4
+    { id: 7, x: marginX, y: marginY + (courtLength + gapY) * 3, label: '7' },
+    { id: 8, x: marginX + courtWidth + gapX, y: marginY + (courtLength + gapY) * 3, label: '8' },
+    // Row 5
+    { id: 9, x: marginX, y: marginY + (courtLength + gapY) * 4, label: '9' },
+    { id: 10, x: marginX + courtWidth + gapX, y: marginY + (courtLength + gapY) * 4, label: '10' },
   ];
 
-  // Vacant space (where court 9 would be)
-  const vacantSpace = {
-    x: marginX + (courtWidth + gapX) * 2,
-    y: marginY + (courtLength + gapY) * 2,
-    width: courtWidth,
-    height: courtLength
-  };
+  // No vacant space - all 10 courts used
+  const vacantSpace = null;
 
   // Open Gable Roof Structure - NO WALLS, just posts
-  // Roof covers the court area (20m x ~44.73m)
+  // Roof covers the court area (40m x ~45.5m)
   // Posts placed at perimeter, spaced ~6-7m apart for structural support
-  const roofStartY = marginY; // Start at top of courts
-  const roofEndY = marginY + totalCourtsHeight; // End at bottom of courts
-  const roofLength = totalCourtsHeight; // ~43.23m
+  const roofStartY = marginY - 1.5; // Start before first court (include buffer)
+  const roofEndY = marginY + totalCourtsHeight - 1.5; // End after last court
+  const roofLength = totalCourtsHeight; // ~45.5m
   const postSize = 0.4; // 400mm x 400mm steel/concrete posts
 
   // Calculate post positions - posts at edges and evenly spaced along length
-  // Left side posts: 7 posts along the 43.23m length (~7.2m spacing)
-  // Right side posts: 7 posts along the 43.23m length (~7.2m spacing)
-  // Total: 14 perimeter posts
-  const numPostsPerSide = 7;
+  // Left side posts: 8 posts along the 45.5m length (~6.5m spacing)
+  // Right side posts: 8 posts along the 45.5m length (~6.5m spacing)
+  // Total: 16 perimeter posts
+  const numPostsPerSide = 8;
   const postSpacing = roofLength / (numPostsPerSide - 1);
 
   const roofPosts = [];
@@ -100,11 +103,11 @@ export default function CourtLayout9() {
       side: 'left'
     });
   }
-  // Right side posts (x = 20)
+  // Right side posts (x = 40)
   for (let i = 0; i < numPostsPerSide; i++) {
     roofPosts.push({
       id: `R${i + 1}`,
-      x: 20,
+      x: 40,
       y: roofStartY + i * postSpacing,
       side: 'right'
     });
@@ -119,8 +122,8 @@ export default function CourtLayout9() {
     scene.background = new THREE.Color(0x1e293b);
 
     const camera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 0.1, 500);
-    camera.position.set(30, 25, 40);
-    camera.lookAt(10, 0, 22);
+    camera.position.set(50, 35, 50);
+    camera.lookAt(20, 0, 25);
     cameraRef.current = camera;
 
     const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -135,7 +138,7 @@ export default function CourtLayout9() {
     controls.minDistance = 15;
     controls.maxDistance = 100;
     controls.maxPolarAngle = Math.PI / 2.1;
-    controls.target.set(10, 0, 22);
+    controls.target.set(20, 0, 25);
     controlsRef.current = controls;
 
     // Lighting
@@ -145,50 +148,68 @@ export default function CourtLayout9() {
     dirLight.castShadow = true;
     scene.add(dirLight);
 
-    // Ground (20m x 50m lot)
+    // Ground (40m x 50m lot)
     const ground = new THREE.Mesh(
-      new THREE.PlaneGeometry(20, 50),
+      new THREE.PlaneGeometry(40, 50),
       new THREE.MeshStandardMaterial({ color: 0x374151 })
     );
     ground.rotation.x = -Math.PI / 2;
-    ground.position.set(10, -0.1, 25);
+    ground.position.set(20, -0.1, 25);
     ground.receiveShadow = true;
     scene.add(ground);
 
     // Court floor area (courts + margins)
     const courtFloor = new THREE.Mesh(
-      new THREE.PlaneGeometry(20, totalCourtsHeight),
+      new THREE.PlaneGeometry(40, totalCourtsHeight),
       new THREE.MeshStandardMaterial({ color: 0x7c2d12 })
     );
     courtFloor.rotation.x = -Math.PI / 2;
-    courtFloor.position.set(10, 0, marginY + totalCourtsHeight / 2);
+    courtFloor.position.set(20, 0, marginY + totalCourtsHeight / 2);
     scene.add(courtFloor);
 
-    // Create courts (8 courts in 3x3 grid minus 1)
+    // Create courts (10 courts in 2x5 layout) - Standard orientation: net vertical, NVZ on left/right
     courts.forEach((court) => {
       const x = court.x + courtWidth / 2;
       const z = court.y + courtLength / 2;
 
-      // Court surface
-      const courtMesh = new THREE.Mesh(
-        new THREE.PlaneGeometry(courtWidth, courtLength),
+      // Left service area (blue)
+      const leftService = new THREE.Mesh(
+        new THREE.PlaneGeometry(courtWidth / 2 - kitchenDepth, courtLength),
         new THREE.MeshStandardMaterial({ color: 0x3b82f6 })
       );
-      courtMesh.rotation.x = -Math.PI / 2;
-      courtMesh.position.set(x, 0.02, z);
-      scene.add(courtMesh);
+      leftService.rotation.x = -Math.PI / 2;
+      leftService.position.set(x - courtWidth / 4 - kitchenDepth / 2, 0.02, z);
+      scene.add(leftService);
 
-      // Kitchen zones (green)
-      const kitchenMat = new THREE.MeshStandardMaterial({ color: 0x22c55e });
-      const topKitchen = new THREE.Mesh(new THREE.PlaneGeometry(courtWidth, kitchenDepth), kitchenMat);
-      topKitchen.rotation.x = -Math.PI / 2;
-      topKitchen.position.set(x, 0.03, z - courtLength / 2 + kitchenDepth / 2 + (courtLength / 2 - kitchenDepth));
-      scene.add(topKitchen);
+      // Right service area (blue)
+      const rightService = new THREE.Mesh(
+        new THREE.PlaneGeometry(courtWidth / 2 - kitchenDepth, courtLength),
+        new THREE.MeshStandardMaterial({ color: 0x3b82f6 })
+      );
+      rightService.rotation.x = -Math.PI / 2;
+      rightService.position.set(x + courtWidth / 4 + kitchenDepth / 2, 0.02, z);
+      scene.add(rightService);
 
-      const bottomKitchen = new THREE.Mesh(new THREE.PlaneGeometry(courtWidth, kitchenDepth), kitchenMat);
-      bottomKitchen.rotation.x = -Math.PI / 2;
-      bottomKitchen.position.set(x, 0.03, z + courtLength / 2 - kitchenDepth / 2 - (courtLength / 2 - kitchenDepth));
-      scene.add(bottomKitchen);
+      // Kitchen zones (teal) - on left and right of net
+      const kitchenMat = new THREE.MeshStandardMaterial({ color: 0x5ba3b0 });
+
+      // Left kitchen (adjacent to net on left side)
+      const leftKitchen = new THREE.Mesh(
+        new THREE.PlaneGeometry(kitchenDepth, courtLength),
+        kitchenMat
+      );
+      leftKitchen.rotation.x = -Math.PI / 2;
+      leftKitchen.position.set(x - kitchenDepth / 2, 0.03, z);
+      scene.add(leftKitchen);
+
+      // Right kitchen (adjacent to net on right side)
+      const rightKitchen = new THREE.Mesh(
+        new THREE.PlaneGeometry(kitchenDepth, courtLength),
+        kitchenMat
+      );
+      rightKitchen.rotation.x = -Math.PI / 2;
+      rightKitchen.position.set(x + kitchenDepth / 2, 0.03, z);
+      scene.add(rightKitchen);
 
       // Court lines
       const lineMat = new THREE.LineBasicMaterial({ color: 0xffffff });
@@ -198,21 +219,21 @@ export default function CourtLayout9() {
       courtLines.position.set(x, 0.04, z);
       scene.add(courtLines);
 
-      // Net
+      // Net (vertical - runs along z-axis)
       const net = new THREE.Mesh(
-        new THREE.BoxGeometry(courtWidth, 0.9, 0.05),
-        new THREE.MeshStandardMaterial({ color: 0x1e293b, transparent: true, opacity: 0.7 })
+        new THREE.BoxGeometry(0.05, 0.9, courtLength),
+        new THREE.MeshStandardMaterial({ color: 0x1e293b, transparent: true, opacity: 0.8 })
       );
       net.position.set(x, 0.45, z);
       scene.add(net);
 
-      // Net posts
-      [-courtWidth / 2, courtWidth / 2].forEach(offset => {
+      // Net posts (at front and back of court)
+      [-courtLength / 2, courtLength / 2].forEach(offset => {
         const post = new THREE.Mesh(
           new THREE.CylinderGeometry(0.03, 0.03, 1),
           new THREE.MeshStandardMaterial({ color: 0x64748b })
         );
-        post.position.set(x + offset, 0.5, z);
+        post.position.set(x, 0.5, z + offset);
         scene.add(post);
       });
 
@@ -238,40 +259,42 @@ export default function CourtLayout9() {
       scene.add(labelMesh);
     });
 
-    // Vacant space (where court 9 would be)
-    const vacantMesh = new THREE.Mesh(
-      new THREE.PlaneGeometry(vacantSpace.width, vacantSpace.height),
-      new THREE.MeshStandardMaterial({ color: 0x4b5563 })
-    );
-    vacantMesh.rotation.x = -Math.PI / 2;
-    vacantMesh.position.set(vacantSpace.x + vacantSpace.width / 2, 0.02, vacantSpace.y + vacantSpace.height / 2);
-    scene.add(vacantMesh);
+    // Vacant space (only render if vacantSpace exists)
+    if (vacantSpace) {
+      const vacantMesh = new THREE.Mesh(
+        new THREE.PlaneGeometry(vacantSpace.width, vacantSpace.height),
+        new THREE.MeshStandardMaterial({ color: 0x4b5563 })
+      );
+      vacantMesh.rotation.x = -Math.PI / 2;
+      vacantMesh.position.set(vacantSpace.x + vacantSpace.width / 2, 0.02, vacantSpace.y + vacantSpace.height / 2);
+      scene.add(vacantMesh);
 
-    // Vacant label
-    const vacantCanvas = document.createElement('canvas');
-    vacantCanvas.width = 128;
-    vacantCanvas.height = 64;
-    const vacantCtx = vacantCanvas.getContext('2d');
-    vacantCtx.fillStyle = '#9ca3af';
-    vacantCtx.font = 'bold 24px Arial';
-    vacantCtx.textAlign = 'center';
-    vacantCtx.textBaseline = 'middle';
-    vacantCtx.fillText('VACANT', 64, 32);
-    const vacantLabel = new THREE.Mesh(
-      new THREE.PlaneGeometry(3, 1.5),
-      new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(vacantCanvas), transparent: true })
-    );
-    vacantLabel.rotation.x = -Math.PI / 2;
-    vacantLabel.position.set(vacantSpace.x + vacantSpace.width / 2, 0.05, vacantSpace.y + vacantSpace.height / 2);
-    scene.add(vacantLabel);
+      // Vacant label
+      const vacantCanvas = document.createElement('canvas');
+      vacantCanvas.width = 128;
+      vacantCanvas.height = 64;
+      const vacantCtx = vacantCanvas.getContext('2d');
+      vacantCtx.fillStyle = '#9ca3af';
+      vacantCtx.font = 'bold 24px Arial';
+      vacantCtx.textAlign = 'center';
+      vacantCtx.textBaseline = 'middle';
+      vacantCtx.fillText('VACANT', 64, 32);
+      const vacantLabel = new THREE.Mesh(
+        new THREE.PlaneGeometry(3, 1.5),
+        new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(vacantCanvas), transparent: true })
+      );
+      vacantLabel.rotation.x = -Math.PI / 2;
+      vacantLabel.position.set(vacantSpace.x + vacantSpace.width / 2, 0.05, vacantSpace.y + vacantSpace.height / 2);
+      scene.add(vacantLabel);
+    }
 
     // Parking area
     const parkingArea = new THREE.Mesh(
-      new THREE.PlaneGeometry(20, 50 - marginY - totalCourtsHeight),
+      new THREE.PlaneGeometry(40, 50 - marginY - totalCourtsHeight),
       new THREE.MeshStandardMaterial({ color: 0x292524 })
     );
     parkingArea.rotation.x = -Math.PI / 2;
-    parkingArea.position.set(10, 0.01, marginY + totalCourtsHeight + (50 - marginY - totalCourtsHeight) / 2);
+    parkingArea.position.set(20, 0.01, marginY + totalCourtsHeight + (50 - marginY - totalCourtsHeight) / 2);
     scene.add(parkingArea);
 
     // Parking slots
@@ -287,14 +310,14 @@ export default function CourtLayout9() {
 
     // Open Gable Roof Structure
     const roofHeight = 8; // Height at eaves
-    const ridgeHeight = 10; // Height at ridge
-    const roofSpan = 20; // Width of roof
+    const ridgeHeight = 12; // Height at ridge (higher for wider span)
+    const roofSpan = 40; // Width of roof
 
     if (showPosts) {
       // Roof posts (14 posts - 7 on each side)
       const postMat = new THREE.MeshStandardMaterial({ color: 0xdc2626 });
       roofPosts.forEach((post) => {
-        const px = post.side === 'left' ? 0 : 20;
+        const px = post.side === 'left' ? 0 : 40;
         const pz = post.y;
         const postMesh = new THREE.Mesh(
           new THREE.BoxGeometry(postSize, roofHeight, postSize),
@@ -317,9 +340,9 @@ export default function CourtLayout9() {
       const trussMat = new THREE.MeshStandardMaterial({ color: 0xf59e0b });
 
       // Calculate rafter geometry
-      // Rafters go from eave (x=0 or x=20) at roofHeight to ridge (x=10) at ridgeHeight
-      const halfSpan = 10; // Half of 20m width
-      const rise = ridgeHeight - roofHeight; // 2m rise
+      // Rafters go from eave (x=0 or x=40) at roofHeight to ridge (x=20) at ridgeHeight
+      const halfSpan = 20; // Half of 40m width
+      const rise = ridgeHeight - roofHeight; // 4m rise
       const rafterLength = Math.sqrt(halfSpan * halfSpan + rise * rise);
       const rafterAngle = Math.atan2(rise, halfSpan);
 
@@ -331,7 +354,7 @@ export default function CourtLayout9() {
           new THREE.BoxGeometry(roofSpan, 0.25, 0.25),
           trussMat
         );
-        tieBeam.position.set(10, roofHeight, zPos);
+        tieBeam.position.set(20, roofHeight, zPos);
         scene.add(tieBeam);
 
         // Left rafter (from left eave up to ridge)
@@ -351,7 +374,7 @@ export default function CourtLayout9() {
           trussMat
         );
         // Position at midpoint between right eave and ridge
-        rightRafter.position.set(10 + halfSpan / 2, roofHeight + rise / 2, zPos);
+        rightRafter.position.set(20 + halfSpan / 2, roofHeight + rise / 2, zPos);
         // Rotate opposite direction
         rightRafter.rotation.z = -rafterAngle;
         scene.add(rightRafter);
@@ -362,7 +385,7 @@ export default function CourtLayout9() {
             new THREE.BoxGeometry(0.2, rise, 0.2),
             new THREE.MeshStandardMaterial({ color: 0xd97706 })
           );
-          kingPost.position.set(10, roofHeight + rise / 2, zPos);
+          kingPost.position.set(20, roofHeight + rise / 2, zPos);
           scene.add(kingPost);
         }
       }
@@ -372,7 +395,7 @@ export default function CourtLayout9() {
         new THREE.BoxGeometry(0.3, 0.3, roofLength),
         new THREE.MeshStandardMaterial({ color: 0xfbbf24 })
       );
-      ridgeBeam.position.set(10, ridgeHeight, marginY + totalCourtsHeight / 2);
+      ridgeBeam.position.set(20, ridgeHeight, marginY + totalCourtsHeight / 2);
       scene.add(ridgeBeam);
 
       // Eave beams (horizontal beams at the top of the posts)
@@ -382,7 +405,7 @@ export default function CourtLayout9() {
       scene.add(leftEave);
 
       const rightEave = new THREE.Mesh(new THREE.BoxGeometry(0.25, 0.25, roofLength), eaveMat);
-      rightEave.position.set(20, roofHeight, marginY + totalCourtsHeight / 2);
+      rightEave.position.set(40, roofHeight, marginY + totalCourtsHeight / 2);
       scene.add(rightEave);
 
       // Purlins (horizontal beams running along the roof slope)
@@ -390,7 +413,7 @@ export default function CourtLayout9() {
       [0.33, 0.66].forEach(t => {
         const y = roofHeight + rise * t;
         const xLeft = halfSpan * (1 - t); // Position along left slope
-        const xRight = 10 + halfSpan * t; // Position along right slope
+        const xRight = 20 + halfSpan * t; // Position along right slope
 
         const leftPurlin = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.12, roofLength), purlinMat);
         leftPurlin.position.set(xLeft, y, marginY + totalCourtsHeight / 2);
@@ -411,7 +434,7 @@ export default function CourtLayout9() {
         opacity: 0.7
       });
 
-      const halfSpan = 10;
+      const halfSpan = 20;
       const rise = ridgeHeight - roofHeight;
       const roofPanelWidth = Math.sqrt(halfSpan * halfSpan + rise * rise) + 0.5;
       const roofAngle = Math.atan2(rise, halfSpan);
@@ -431,7 +454,7 @@ export default function CourtLayout9() {
       rightRoof.rotation.order = 'ZXY';
       rightRoof.rotation.x = -Math.PI / 2;
       rightRoof.rotation.z = -roofAngle;
-      rightRoof.position.set(10 + halfSpan / 2, roofHeight + rise / 2, marginY + totalCourtsHeight / 2);
+      rightRoof.position.set(20 + halfSpan / 2, roofHeight + rise / 2, marginY + totalCourtsHeight / 2);
       scene.add(rightRoof);
     }
 
@@ -447,8 +470,8 @@ export default function CourtLayout9() {
       const lightHousingMat = new THREE.MeshStandardMaterial({ color: 0x374151 });
       const wireMat = new THREE.MeshStandardMaterial({ color: 0x1f2937 });
 
-      // Light fixture positions - 3 columns (x positions: 5, 10, 15) and rows along court length
-      const lightColumns = [5, 10, 15]; // Left third, center, right third
+      // Light fixture positions - 5 columns (x positions spread across 40m width) and rows along court length
+      const lightColumns = [8, 16, 20, 24, 32]; // Spread across 40m width
       const numLightRows = 6; // 6 lights per column along the length
       const lightRowSpacing = roofLength / (numLightRows + 1);
 
@@ -457,7 +480,7 @@ export default function CourtLayout9() {
           const zPos = roofStartY + i * lightRowSpacing;
 
           // Wire/cable hanging from roof
-          const wireLength = (xPos === 10) ? 1 : 0.5; // Center lights hang lower
+          const wireLength = (xPos === 20) ? 1 : 0.5; // Center lights hang lower
           const wire = new THREE.Mesh(
             new THREE.CylinderGeometry(0.02, 0.02, wireLength),
             wireMat
@@ -545,100 +568,107 @@ export default function CourtLayout9() {
   };
 
   const renderCourt = (court) => {
-    const w = courtWidth * scale;
-    const h = courtLength * scale;
-    const kitchen = kitchenDepth * scale;
+    const w = courtWidth * scale;  // 13.41m = 134.1px (court length displayed as width)
+    const h = courtLength * scale; // 6.1m = 61px (court width displayed as height)
+    const kitchen = kitchenDepth * scale; // 2.13m = 21.3px
     const x = court.x * scale;
     const y = court.y * scale;
     const isSelected = selectedCourt === court.id;
 
+    // Standard court orientation: Net runs VERTICALLY, NVZ on left/right of net
+    // Left half: service areas (blue) + left NVZ (green)
+    // Right half: right NVZ (green) + service areas (blue)
+
     return (
       <g key={court.id} onClick={() => setSelectedCourt(isSelected ? null : court.id)} style={{ cursor: 'pointer' }}>
-        {/* Court surface - top half (blue) */}
+        {/* Left service area (blue) - from left edge to left kitchen line */}
         <rect
           x={x}
           y={y}
-          width={w}
-          height={h / 2 - kitchen}
+          width={w / 2 - kitchen}
+          height={h}
           fill={isSelected ? '#0d9488' : '#3b82f6'}
           stroke="#1e40af"
           strokeWidth="1"
         />
 
-        {/* Kitchen zone - top (green) */}
+        {/* Left Kitchen zone (green/teal) - adjacent to net on left */}
         <rect
-          x={x}
-          y={y + h / 2 - kitchen}
-          width={w}
-          height={kitchen}
-          fill={isSelected ? '#065f46' : '#22c55e'}
+          x={x + w / 2 - kitchen}
+          y={y}
+          width={kitchen}
+          height={h}
+          fill={isSelected ? '#065f46' : '#5ba3b0'}
           stroke="#166534"
           strokeWidth="1"
         />
 
-        {/* Kitchen zone - bottom (green) */}
+        {/* Right Kitchen zone (green/teal) - adjacent to net on right */}
         <rect
-          x={x}
-          y={y + h / 2}
-          width={w}
-          height={kitchen}
-          fill={isSelected ? '#065f46' : '#22c55e'}
+          x={x + w / 2}
+          y={y}
+          width={kitchen}
+          height={h}
+          fill={isSelected ? '#065f46' : '#5ba3b0'}
           stroke="#166534"
           strokeWidth="1"
         />
 
-        {/* Court surface - bottom half (blue) */}
+        {/* Right service area (blue) - from right kitchen line to right edge */}
         <rect
-          x={x}
-          y={y + h / 2 + kitchen}
-          width={w}
-          height={h / 2 - kitchen}
+          x={x + w / 2 + kitchen}
+          y={y}
+          width={w / 2 - kitchen}
+          height={h}
           fill={isSelected ? '#0d9488' : '#3b82f6'}
           stroke="#1e40af"
           strokeWidth="1"
         />
 
-        {/* Net line (center) */}
-        <line
-          x1={x}
-          y1={y + h / 2}
-          x2={x + w}
-          y2={y + h / 2}
-          stroke="white"
-          strokeWidth="2"
-        />
-
-        {/* Service court divider - top half */}
+        {/* Net line (vertical center) */}
         <line
           x1={x + w / 2}
           y1={y}
           x2={x + w / 2}
-          y2={y + h / 2 - kitchen}
-          stroke="white"
-          strokeWidth="1"
-        />
-
-        {/* Service court divider - bottom half */}
-        <line
-          x1={x + w / 2}
-          y1={y + h / 2 + kitchen}
-          x2={x + w / 2}
           y2={y + h}
+          stroke="#1e293b"
+          strokeWidth="3"
+        />
+
+        {/* Center line - left half (horizontal, divides Even/Odd courts) */}
+        <line
+          x1={x}
+          y1={y + h / 2}
+          x2={x + w / 2 - kitchen}
+          y2={y + h / 2}
           stroke="white"
           strokeWidth="1"
         />
 
-        {/* Baselines */}
-        <line x1={x} y1={y} x2={x + w} y2={y} stroke="white" strokeWidth="2" />
-        <line x1={x} y1={y + h} x2={x + w} y2={y + h} stroke="white" strokeWidth="2" />
+        {/* Center line - right half (horizontal, divides Even/Odd courts) */}
+        <line
+          x1={x + w / 2 + kitchen}
+          y1={y + h / 2}
+          x2={x + w}
+          y2={y + h / 2}
+          stroke="white"
+          strokeWidth="1"
+        />
 
-        {/* Sidelines */}
-        <line x1={x} y1={y} x2={x} y2={y + h} stroke="white" strokeWidth="2" />
-        <line x1={x + w} y1={y} x2={x + w} y2={y + h} stroke="white" strokeWidth="2" />
+        {/* Court outline */}
+        <rect
+          x={x}
+          y={y}
+          width={w}
+          height={h}
+          fill="none"
+          stroke="white"
+          strokeWidth="2"
+        />
 
-        {/* Kitchen lines */}
-        <line x1={x} y1={y + h / 2 - kitchen} x2={x + w} y2={y + h / 2 - kitchen} stroke="white" strokeWidth="1.5" />
-        <line x1={x} y1={y + h / 2 + kitchen} x2={x + w} y2={y + h / 2 + kitchen} stroke="white" strokeWidth="1.5" />
+        {/* Kitchen lines (vertical) */}
+        <line x1={x + w / 2 - kitchen} y1={y} x2={x + w / 2 - kitchen} y2={y + h} stroke="white" strokeWidth="1.5" />
+        <line x1={x + w / 2 + kitchen} y1={y} x2={x + w / 2 + kitchen} y2={y + h} stroke="white" strokeWidth="1.5" />
 
         {/* Court label */}
         <text
@@ -647,9 +677,9 @@ export default function CourtLayout9() {
           textAnchor="middle"
           dominantBaseline="middle"
           fill="white"
-          fontSize="10"
+          fontSize="12"
           fontWeight="bold"
-          style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.5)' }}
+          style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.8)' }}
         >
           {court.label}
         </text>
@@ -657,10 +687,10 @@ export default function CourtLayout9() {
         {showCourtDetails && (
           <>
             {/* Kitchen labels */}
-            <text x={x + w / 2} y={y + h / 2 - kitchen / 2} textAnchor="middle" dominantBaseline="middle" fill="white" fontSize="4" opacity="0.9">
+            <text x={x + w / 2 - kitchen / 2} y={y + h / 2} textAnchor="middle" dominantBaseline="middle" fill="white" fontSize="4" opacity="0.9">
               NVZ
             </text>
-            <text x={x + w / 2} y={y + h / 2 + kitchen / 2} textAnchor="middle" dominantBaseline="middle" fill="white" fontSize="4" opacity="0.9">
+            <text x={x + w / 2 + kitchen / 2} y={y + h / 2} textAnchor="middle" dominantBaseline="middle" fill="white" fontSize="4" opacity="0.9">
               NVZ
             </text>
           </>
@@ -675,10 +705,10 @@ export default function CourtLayout9() {
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-2xl font-bold text-orange-400">8-Court Covered Layout + Vacant</h1>
-            <p className="text-slate-400 text-sm">20m x 50m (1,000 sqm) - Open Gable Roof, No Walls, 14 Posts</p>
+            <h1 className="text-2xl font-bold text-orange-400">10-Court Standard Layout</h1>
+            <p className="text-slate-400 text-sm">40m x 50m (2,000 sqm) - 60'×30' Out-of-Bounds per Court</p>
           </div>
-          <a href="index.html" className="text-teal-400 hover:text-teal-300 text-sm">
+          <a href="https://rhonneljickaincordova.github.io/pickle-pro/" className="text-teal-400 hover:text-teal-300 text-sm">
             ← Back to Calculator
           </a>
         </div>
@@ -853,7 +883,7 @@ export default function CourtLayout9() {
                   <line x1="40" y1="10" x2="40" y2="20" stroke="#f97316" strokeWidth="1" />
                   <line x1={40 + landWidth} y1="10" x2={40 + landWidth} y2="20" stroke="#f97316" strokeWidth="1" />
                   <text x={40 + landWidth / 2} y="10" textAnchor="middle" fill="#f97316" fontSize="11" fontWeight="bold">
-                    {formatDim(20)}
+                    {formatDim(40)}
                   </text>
                 </g>
 
@@ -877,7 +907,7 @@ export default function CourtLayout9() {
 
                 {/* Area label */}
                 <text x={40 + landWidth / 2} y={landHeight + 50} textAnchor="middle" fill="#64748b" fontSize="10">
-                  Total Area: {unit === 'meters' ? '1,000 sqm' : '10,764 sqft'}
+                  Total Area: {unit === 'meters' ? '2,000 sqm' : '21,528 sqft'}
                 </text>
               </>
             )}
@@ -886,40 +916,44 @@ export default function CourtLayout9() {
             <g transform="translate(40, 30)">
               {courts.map(renderCourt)}
 
-              {/* Vacant Space (where court 9 would be) */}
-              <rect
-                x={vacantSpace.x * scale}
-                y={vacantSpace.y * scale}
-                width={vacantSpace.width * scale}
-                height={vacantSpace.height * scale}
-                fill="#4b5563"
-                stroke="#6b7280"
-                strokeWidth="2"
-                strokeDasharray="5,3"
-              />
-              {/* Vacant label */}
-              <text
-                x={(vacantSpace.x + vacantSpace.width / 2) * scale}
-                y={(vacantSpace.y + vacantSpace.height / 2 - 1) * scale}
-                textAnchor="middle"
-                dominantBaseline="middle"
-                fill="#9ca3af"
-                fontSize="9"
-                fontWeight="bold"
-              >
-                VACANT
-              </text>
-              {/* Vacant space dimensions */}
-              <text
-                x={(vacantSpace.x + vacantSpace.width / 2) * scale}
-                y={(vacantSpace.y + vacantSpace.height / 2 + 1.2) * scale}
-                textAnchor="middle"
-                dominantBaseline="middle"
-                fill="#9ca3af"
-                fontSize="7"
-              >
-                {formatDim(vacantSpace.width)} x {formatDim(vacantSpace.height)}
-              </text>
+              {/* Vacant Space (only render if vacantSpace exists) */}
+              {vacantSpace && (
+                <>
+                  <rect
+                    x={vacantSpace.x * scale}
+                    y={vacantSpace.y * scale}
+                    width={vacantSpace.width * scale}
+                    height={vacantSpace.height * scale}
+                    fill="#4b5563"
+                    stroke="#6b7280"
+                    strokeWidth="2"
+                    strokeDasharray="5,3"
+                  />
+                  {/* Vacant label */}
+                  <text
+                    x={(vacantSpace.x + vacantSpace.width / 2) * scale}
+                    y={(vacantSpace.y + vacantSpace.height / 2 - 1) * scale}
+                    textAnchor="middle"
+                    dominantBaseline="middle"
+                    fill="#9ca3af"
+                    fontSize="9"
+                    fontWeight="bold"
+                  >
+                    VACANT
+                  </text>
+                  {/* Vacant space dimensions */}
+                  <text
+                    x={(vacantSpace.x + vacantSpace.width / 2) * scale}
+                    y={(vacantSpace.y + vacantSpace.height / 2 + 1.2) * scale}
+                    textAnchor="middle"
+                    dominantBaseline="middle"
+                    fill="#9ca3af"
+                    fontSize="7"
+                  >
+                    {formatDim(vacantSpace.width)} x {formatDim(vacantSpace.height)}
+                  </text>
+                </>
+              )}
             </g>
 
             {/* Court dimensions */}
@@ -1181,18 +1215,18 @@ export default function CourtLayout9() {
               </div>
               <div className="bg-slate-700/50 p-2 rounded border-l-2 border-slate-500">
                 <p className="text-slate-400 text-xs">Width</p>
-                <p className="text-white font-bold">{formatDim(20)}</p>
-                <p className="text-slate-500 text-xs">({toFeet(20)} ft)</p>
+                <p className="text-white font-bold">{formatDim(40)}</p>
+                <p className="text-slate-500 text-xs">({toFeet(40)} ft)</p>
               </div>
               <div className="bg-slate-700/50 p-2 rounded border-l-2 border-cyan-500">
                 <p className="text-slate-400 text-xs">Covered Area</p>
-                <p className="text-cyan-400 font-bold">{(20 * roofLength).toFixed(0)} sqm</p>
-                <p className="text-slate-500 text-xs">({(20 * roofLength * 10.764).toFixed(0)} sqft)</p>
+                <p className="text-cyan-400 font-bold">{(40 * roofLength).toFixed(0)} sqm</p>
+                <p className="text-slate-500 text-xs">({(40 * roofLength * 10.764).toFixed(0)} sqft)</p>
               </div>
               <div className="bg-slate-700/50 p-2 rounded border-l-2 border-slate-500">
                 <p className="text-slate-400 text-xs">Perimeter</p>
-                <p className="text-white font-bold">{formatDim(Number((2 * 20 + 2 * roofLength).toFixed(1)))}</p>
-                <p className="text-slate-500 text-xs">({toFeet(2 * 20 + 2 * roofLength)} ft)</p>
+                <p className="text-white font-bold">{formatDim(Number((2 * 40 + 2 * roofLength).toFixed(1)))}</p>
+                <p className="text-slate-500 text-xs">({toFeet(2 * 40 + 2 * roofLength)} ft)</p>
               </div>
             </div>
           </div>
@@ -1208,13 +1242,13 @@ export default function CourtLayout9() {
               </div>
               <div className="bg-slate-700/50 p-2 rounded border-l-2 border-yellow-500">
                 <p className="text-slate-400 text-xs">Ridge Height</p>
-                <p className="text-yellow-400 font-bold">10m</p>
-                <p className="text-slate-500 text-xs">(32.8 ft)</p>
+                <p className="text-yellow-400 font-bold">12m</p>
+                <p className="text-slate-500 text-xs">(39.4 ft)</p>
               </div>
               <div className="bg-slate-700/50 p-2 rounded border-l-2 border-orange-500">
                 <p className="text-slate-400 text-xs">Roof Pitch</p>
                 <p className="text-orange-400 font-bold">11.3°</p>
-                <p className="text-slate-500 text-xs">(2:10 slope)</p>
+                <p className="text-slate-500 text-xs">(4:20 slope)</p>
               </div>
               <div className="bg-slate-700/50 p-2 rounded border-l-2 border-green-500">
                 <p className="text-slate-400 text-xs">Clearance</p>
@@ -1282,7 +1316,7 @@ export default function CourtLayout9() {
               </div>
               <div className="bg-slate-700/50 p-2 rounded border-l-2 border-cyan-500">
                 <p className="text-slate-400 text-xs">Coverage</p>
-                <p className="text-cyan-400 font-bold">~{((Math.sqrt(100 + 4) * roofLength) * 2).toFixed(0)} sqm</p>
+                <p className="text-cyan-400 font-bold">~{((Math.sqrt(400 + 16) * roofLength) * 2).toFixed(0)} sqm</p>
                 <p className="text-slate-500 text-xs">(incl. overlap)</p>
               </div>
             </div>
@@ -1304,12 +1338,12 @@ export default function CourtLayout9() {
               </div>
               <div className="bg-slate-700/50 p-2 rounded border-l-2 border-yellow-500">
                 <p className="text-slate-400 text-xs">LED Lights</p>
-                <p className="text-yellow-400 font-bold">18 units</p>
+                <p className="text-yellow-400 font-bold">30 units</p>
                 <p className="text-slate-500 text-xs">500 lux @ court</p>
               </div>
               <div className="bg-slate-700/50 p-2 rounded border-l-2 border-slate-500">
                 <p className="text-slate-400 text-xs">Power Load</p>
-                <p className="text-white font-bold">~12 kW</p>
+                <p className="text-white font-bold">~20 kW</p>
                 <p className="text-slate-500 text-xs">Lighting system</p>
               </div>
             </div>
@@ -1323,23 +1357,23 @@ export default function CourtLayout9() {
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
             <div className="bg-slate-800/80 p-3 rounded text-center">
-              <p className="text-red-400 font-bold text-lg">~8 tons</p>
+              <p className="text-red-400 font-bold text-lg">~12 tons</p>
               <p className="text-slate-400 text-xs">Steel Posts</p>
             </div>
             <div className="bg-slate-800/80 p-3 rounded text-center">
-              <p className="text-amber-400 font-bold text-lg">~6 tons</p>
+              <p className="text-amber-400 font-bold text-lg">~10 tons</p>
               <p className="text-slate-400 text-xs">Trusses/Beams</p>
             </div>
             <div className="bg-slate-800/80 p-3 rounded text-center">
-              <p className="text-cyan-400 font-bold text-lg">~{((Math.sqrt(100 + 4) * roofLength) * 2).toFixed(0)} sqm</p>
+              <p className="text-cyan-400 font-bold text-lg">~{((Math.sqrt(400 + 16) * roofLength) * 2).toFixed(0)} sqm</p>
               <p className="text-slate-400 text-xs">Roofing Sheets</p>
             </div>
             <div className="bg-slate-800/80 p-3 rounded text-center">
-              <p className="text-orange-400 font-bold text-lg">~2 tons</p>
+              <p className="text-orange-400 font-bold text-lg">~4 tons</p>
               <p className="text-slate-400 text-xs">Purlins</p>
             </div>
             <div className="bg-slate-800/80 p-3 rounded text-center">
-              <p className="text-slate-300 font-bold text-lg">~35 cum</p>
+              <p className="text-slate-300 font-bold text-lg">~50 cum</p>
               <p className="text-slate-400 text-xs">Concrete Footings</p>
             </div>
           </div>
@@ -1351,15 +1385,15 @@ export default function CourtLayout9() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
             <div>
               <p className="text-slate-400">Land Size</p>
-              <p className="text-white font-semibold">{formatDim(20)} x {formatDim(50)}</p>
+              <p className="text-white font-semibold">{formatDim(40)} x {formatDim(50)}</p>
             </div>
             <div>
               <p className="text-slate-400">Total Area</p>
-              <p className="text-white font-semibold">{unit === 'meters' ? '1,000 sqm' : '10,764 sqft'}</p>
+              <p className="text-white font-semibold">{unit === 'meters' ? '2,000 sqm' : '21,528 sqft'}</p>
             </div>
             <div>
               <p className="text-slate-400">Number of Courts</p>
-              <p className="text-orange-400 font-semibold">8 Courts + 1 Vacant</p>
+              <p className="text-orange-400 font-semibold">10 Courts</p>
             </div>
             <div>
               <p className="text-slate-400">Court Size</p>
