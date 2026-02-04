@@ -269,6 +269,25 @@
     <div class="grid-2">
       <!-- Left Column -->
       <div>
+        <!-- Facility Info -->
+        <div class="panel" style="background: linear-gradient(135deg, #1e3a5f, #0f172a); border: 1px solid #3b82f6;">
+          <div class="panel-title" style="color: #60a5fa;">📐 Facility Specifications (40m × 50m Lot)</div>
+          <div class="grid-3" style="margin-bottom: 0;">
+            <div style="text-align: center; padding: 0.5rem;">
+              <div style="font-size: 1.5rem; font-weight: bold; color: #f59e0b;">2,000</div>
+              <div style="font-size: 0.75rem; color: #94a3b8;">sqm Total Area</div>
+            </div>
+            <div style="text-align: center; padding: 0.5rem;">
+              <div style="font-size: 1.5rem; font-weight: bold; color: #14b8a6;">60'×30'</div>
+              <div style="font-size: 0.75rem; color: #94a3b8;">Standard Buffer</div>
+            </div>
+            <div style="text-align: center; padding: 0.5rem;">
+              <div style="font-size: 1.5rem; font-weight: bold; color: #a855f7;">54'×28'</div>
+              <div style="font-size: 0.75rem; color: #94a3b8;">Recreational Buffer</div>
+            </div>
+          </div>
+        </div>
+
         <!-- Facility Settings -->
         <div class="panel">
           <div class="panel-title">🏟️ Facility Settings</div>
@@ -277,10 +296,10 @@
               <label>Number of Courts</label>
               <select id="numCourts" onchange="updateCalculations()">
                 <option value="4">4 Courts</option>
-                <option value="5">5 Courts</option>
                 <option value="6">6 Courts</option>
-                <option value="7">7 Courts</option>
-                <option value="8" selected>8 Courts</option>
+                <option value="8">8 Courts</option>
+                <option value="10" selected>10 Courts (Standard)</option>
+                <option value="12">12 Courts (Recreational)</option>
               </select>
             </div>
             <div class="input-group">
@@ -467,36 +486,36 @@
         <div class="panel">
           <div class="panel-title">💸 Monthly Operating Expenses</div>
           <div class="expense-row">
-            <span class="name">🏢 Rent</span>
-            <div class="prefix"><span>₱</span><input type="number" id="expRent" value="100000" onchange="updateCalculations()"></div>
+            <span class="name">🏢 Rent (2,000 sqm)</span>
+            <div class="prefix"><span>₱</span><input type="number" id="expRent" value="150000" onchange="updateCalculations()"></div>
           </div>
           <div class="expense-row">
             <span class="name">👥 Salaries & Wages</span>
-            <div class="prefix"><span>₱</span><input type="number" id="expSalaries" value="145000" onchange="updateCalculations()"></div>
+            <div class="prefix"><span>₱</span><input type="number" id="expSalaries" value="180000" onchange="updateCalculations()"></div>
           </div>
           <div class="expense-row">
-            <span class="name">💡 Utilities</span>
-            <div class="prefix"><span>₱</span><input type="number" id="expUtilities" value="35000" onchange="updateCalculations()"></div>
+            <span class="name">💡 Utilities (30 LED lights)</span>
+            <div class="prefix"><span>₱</span><input type="number" id="expUtilities" value="45000" onchange="updateCalculations()"></div>
           </div>
           <div class="expense-row">
             <span class="name">📣 Marketing</span>
-            <div class="prefix"><span>₱</span><input type="number" id="expMarketing" value="15000" onchange="updateCalculations()"></div>
+            <div class="prefix"><span>₱</span><input type="number" id="expMarketing" value="20000" onchange="updateCalculations()"></div>
           </div>
           <div class="expense-row">
-            <span class="name">🔧 Maintenance</span>
-            <div class="prefix"><span>₱</span><input type="number" id="expMaintenance" value="12000" onchange="updateCalculations()"></div>
+            <span class="name">🔧 Maintenance (10-12 courts)</span>
+            <div class="prefix"><span>₱</span><input type="number" id="expMaintenance" value="18000" onchange="updateCalculations()"></div>
           </div>
           <div class="expense-row">
             <span class="name">🛡️ Insurance</span>
-            <div class="prefix"><span>₱</span><input type="number" id="expInsurance" value="5000" onchange="updateCalculations()"></div>
+            <div class="prefix"><span>₱</span><input type="number" id="expInsurance" value="8000" onchange="updateCalculations()"></div>
           </div>
           <div class="expense-row">
             <span class="name">📄 Permits & Taxes</span>
-            <div class="prefix"><span>₱</span><input type="number" id="expPermits" value="5000" onchange="updateCalculations()"></div>
+            <div class="prefix"><span>₱</span><input type="number" id="expPermits" value="7000" onchange="updateCalculations()"></div>
           </div>
           <div class="expense-row">
             <span class="name">📦 Miscellaneous</span>
-            <div class="prefix"><span>₱</span><input type="number" id="expMisc" value="8000" onchange="updateCalculations()"></div>
+            <div class="prefix"><span>₱</span><input type="number" id="expMisc" value="12000" onchange="updateCalculations()"></div>
           </div>
           <div style="display: flex; justify-content: space-between; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 2px solid #475569;">
             <strong>Total Expenses:</strong>
